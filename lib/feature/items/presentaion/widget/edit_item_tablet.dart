@@ -1,16 +1,10 @@
 import 'package:flutter/cupertino.dart';
-
-import '../../../../core/const/widget/custom_text_field.dart';
 import '../../../../core/const/widget/dropdownformcrud.dart';
 import '../../../../core/utils/colors/colors.dart';
 import '../screen/edit_item.dart';
 import 'image_list.dart';
-import 'package:flutter/cupertino.dart';
 import '../../../../core/const/widget/textformcrud.dart';
-import '../../../../core/const/widget/dropdownformcrud.dart';
-import '../../../../core/utils/colors/colors.dart';
-import '../screen/edit_item.dart';
-import 'image_list.dart';
+
 
 class EditItemWideLayouttablet extends StatelessWidget {
   final String itemName;

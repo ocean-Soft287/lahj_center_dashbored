@@ -1,40 +1,38 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lahj_center/core/utils/colors/colors.dart';
+import 'package:lahj_center/core/const/widget/custom_button.dart';
+import 'package:lahj_center/core/const/widget/custom_column_slider.dart';
+import 'package:lahj_center/core/utils/appstyle/app_styles.dart';
+import 'package:lahj_center/core/utils/image/images.dart';
 
-import '../../../../core/const/widget/custom_button.dart';
-import '../../../../core/const/widget/custom_column_slider.dart';
-import '../../../../core/utils/appstyle/app_styles.dart';
-import '../../../../core/utils/image/images.dart';
-import '../../../../core/utils/route/approutes.dart';
+import '../../cubit/auth_cubit.dart';
 
 class MobileLoginScreen extends StatefulWidget {
-  const MobileLoginScreen({super.key});
+  const MobileLoginScreen({super.key, required this.emailController, required this.passwordController});
+  final TextEditingController emailController;
+  final TextEditingController passwordController;
 
   @override
-  _MobileLoginScreenState createState() => _MobileLoginScreenState();
+  State<MobileLoginScreen> createState() => _MobileLoginScreenState();
 }
 
 class _MobileLoginScreenState extends State<MobileLoginScreen> {
-  final TextEditingController emailController = TextEditingController();
-  final TextEditingController passwordController = TextEditingController();
-
   @override
   void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
+    widget.emailController.dispose();
+    widget.passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFE6F3EA), // Light green background as in the image
+      backgroundColor: const Color(0xFFE6F3EA),
       body: SingleChildScrollView(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            TriangleContainer(),
+            const TriangleContainer(),
             const SizedBox(height: 20),
             Container(
               width: 0.8 * MediaQuery.of(context).size.width,
@@ -54,17 +52,11 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
               child: Padding(
                 padding: const EdgeInsets.all(20.0),
                 child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      "تسجيل الدخول",
-                      style: AppStyles.styleLogin(context),
-                    ),
+                    Text("تسجيل الدخول", style: AppStyles.styleLogin(context)),
                     const SizedBox(height: 20),
                     TextField(
-                      controller: emailController,
+                      controller: widget.emailController,
                       decoration: InputDecoration(
                         labelText: "الايميل",
                         labelStyle: AppStyles.textformfieldstyle(context),
@@ -77,7 +69,7 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                     ),
                     const SizedBox(height: 15),
                     TextField(
-                      controller: passwordController,
+                      controller: widget.passwordController,
                       obscureText: true,
                       decoration: InputDecoration(
                         labelText: "كلمه السر",
@@ -94,8 +86,8 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                       alignment: Alignment.centerRight,
                       child: TextButton(
                         onPressed: () {
-                          Navigator.pushNamed(context, Routes.forgetPassword);
-           },
+                          // التوجه لنسيت كلمة السر
+                        },
                         child: const Text(
                           "هل نسيت كلمة السر؟",
                           style: TextStyle(color: Colors.red),
@@ -103,28 +95,48 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
                       ),
                     ),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomButton(
-                        name: 'تسجيل الدخول',
-                        onTap: () {
-                          if (emailController.text.isNotEmpty &&
-                              passwordController.text.isNotEmpty) {
-                            Navigator.pushAndRemoveUntil(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => const CustomColumnSlider()),
-                                  (route) => false,
-                            );
-                          } else {
-                            ScaffoldMessenger.of(context).showSnackBar(
-                              const SnackBar(
-                                content: Text("يرجى إدخال الايميل وكلمة السر"),
-                              ),
-                            );
-                          }
-                        },
-                      ),
+                    BlocConsumer<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        if (state is AuthFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)),
+                          );
+                        } else if (state is AuthSuccess) {
+                          Navigator.pushAndRemoveUntil(
+                            context,
+                            MaterialPageRoute(builder: (context) => const CustomColumnSlider()),
+                                (route) => false,
+                          );
+                        }
+                      },
+                      builder: (context, state) {
+                        if (state is AuthLoading) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+                        return SizedBox(
+                          width: double.infinity,
+                          child: CustomButton(
+                            name: 'تسجيل الدخول',
+                            onTap: () {
+                              final email = widget.emailController.text.trim();
+                              final password = widget.passwordController.text.trim();
+
+                              if (email.isEmpty || password.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("يرجى إدخال الايميل وكلمة السر"),
+                                  ),
+                                );
+                              } else {
+                                context.read<AuthCubit>().login(
+                                  email: email,
+                                  password: password,
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
                     ),
                   ],
                 ),
@@ -136,22 +148,6 @@ class _MobileLoginScreenState extends State<MobileLoginScreen> {
       ),
     );
   }
-}
-
-class CustomShapeClipper extends CustomClipper<Path> {
-  @override
-  Path getClip(Size size) {
-    Path path = Path();
-    path.moveTo(0, size.height * 0.6); // Mid-left
-    path.lineTo(size.width, size.height); // Bottom-right
-    path.lineTo(size.width, 0); // Top-right
-    path.lineTo(0, 0); // Top-left
-    path.close();
-    return path;
-  }
-
-  @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
 }
 
 class TriangleContainer extends StatelessWidget {
@@ -169,7 +165,7 @@ class TriangleContainer extends StatelessWidget {
             padding: const EdgeInsets.all(20.0),
             child: Image.asset(
               Images.logo,
-              height: 200, // Adjusted height to fit better
+              height: 200,
               width: 200,
             ),
           ),
@@ -178,3 +174,19 @@ class TriangleContainer extends StatelessWidget {
     );
   }
 }
+class CustomShapeClipper extends CustomClipper<Path> {
+  @override
+  Path getClip(Size size) {
+    Path path = Path();
+    path.moveTo(0, size.height * 0.6); // Mid-left
+    path.lineTo(size.width, size.height); // Bottom-right
+    path.lineTo(size.width, 0); // Top-right
+    path.lineTo(0, 0); // Top-left
+    path.close();
+    return path;
+  }
+
+  @override
+  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+}
+

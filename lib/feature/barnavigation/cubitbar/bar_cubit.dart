@@ -2,8 +2,8 @@ import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
 
-import '../../addcurrencyandcategory/presentation/screen/add_category.dart';
-import '../../addcurrencyandcategory/presentation/screen/add_currency.dart';
+import '../../addcurrencyandcategory/presentation/presentation/screen/add_category.dart';
+import '../../addcurrencyandcategory/presentation/presentation/screen/add_currency.dart';
 import '../../items/presentaion/screen/addritems_responsive.dart';
 import '../../items/presentaion/screen/edit_item.dart';
 import '../../items/presentaion/screen/items_responsive.dart';

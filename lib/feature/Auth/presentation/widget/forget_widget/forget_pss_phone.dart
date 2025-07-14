@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lahj_center/core/utils/route/approutes.dart';
 
-import '../../../../core/const/widget/custom_button.dart';
-import '../../../../core/utils/appstyle/app_styles.dart';
-import '../../../../core/utils/colors/colors.dart';
+import '../../../../../core/const/widget/custom_button.dart';
+import '../../../../../core/utils/appstyle/app_styles.dart';
+import '../../../../../core/utils/colors/colors.dart';
+import '../../cubit/auth_cubit.dart';
 import '../login_widget/mobile_loginscreen.dart';
 
 class ForgetPssPhone extends StatefulWidget {
   const ForgetPssPhone({super.key});
-
   @override
   State<ForgetPssPhone> createState() => _ForgetPssPhoneState();
 }
@@ -15,6 +17,11 @@ class ForgetPssPhone extends StatefulWidget {
 class _ForgetPssPhoneState extends State<ForgetPssPhone> {
   final TextEditingController emailController = TextEditingController();
 
+  @override
+  void dispose() {
+    emailController.dispose();
+    super.dispose();
+  }
   @override
   Widget build(BuildContext context) {
     double width=MediaQuery.of(context).size.width;
@@ -55,7 +62,7 @@ class _ForgetPssPhoneState extends State<ForgetPssPhone> {
                     ),
                     const SizedBox(height: 20),
                     TextField(
-                      controller: emailController,
+                      controller:emailController,
                       decoration: InputDecoration(
                         labelText: "الايميل",
                         labelStyle: AppStyles.textformfieldstyle(context),
@@ -69,15 +76,43 @@ class _ForgetPssPhoneState extends State<ForgetPssPhone> {
                     const SizedBox(height: 15),
                     const SizedBox(height: 10),
                     const SizedBox(height: 20),
-                    SizedBox(
-                      width: double.infinity,
-                      child: CustomButton(
-                        name: 'تسجيل',
-                        onTap: () {
+                    BlocConsumer<AuthCubit, AuthState>(
+                      listener: (context, state) {
+                        if (state is AuthFailure) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(content: Text(state.message)),
+                          );
+                        } else if (state is AuthForgetPasswordSuccess) {
+                          Navigator.pushNamed(context, Routes.resetpassword);
 
-                        },
-                      ),
+
+                        }
+                      },
+                      builder: (context, state) {
+                        return SizedBox(
+                          width: double.infinity,
+                          child: CustomButton(
+                            name: 'فقدان كلمه السر',
+                            onTap: () {
+                              final email = emailController.text.trim();
+
+                              if (email.isEmpty) {
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  const SnackBar(
+                                    content: Text("يرجى إدخال الايميل"),
+                                  ),
+                                );
+                              } else {
+                                context.read<AuthCubit>().forgetPassword(
+                                  email: email,
+                                );
+                              }
+                            },
+                          ),
+                        );
+                      },
                     ),
+
                   ],
                 ),
               ),

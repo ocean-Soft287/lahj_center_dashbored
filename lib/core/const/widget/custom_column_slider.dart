@@ -5,13 +5,6 @@ import 'package:lahj_center/core/utils/image/images.dart';
 import '../../../feature/barnavigation/cubitbar/bar_cubit.dart';
 import '../../utils/appstyle/size_config.dart';
 import 'menu_item.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lahj_center/core/utils/colors/colors.dart';
-import 'package:lahj_center/core/utils/image/images.dart';
-import '../../../feature/barnavigation/cubitbar/bar_cubit.dart';
-import '../../utils/appstyle/size_config.dart';
-import 'menu_item.dart';
 
 class CustomColumnSlider extends StatelessWidget {
   const CustomColumnSlider({super.key});

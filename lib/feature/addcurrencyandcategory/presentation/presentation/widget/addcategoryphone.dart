@@ -1,10 +1,10 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/const/widget/custom_button.dart';
-import '../../../../core/const/widget/textformcrud.dart';
-import '../../../../core/utils/colors/colors.dart';
-import '../../../../core/utils/font/fonts.dart';
+import '../../../../../core/const/widget/custom_button.dart';
+import '../../../../../core/const/widget/textformcrud.dart';
+import '../../../../../core/utils/colors/colors.dart';
+import '../../../../../core/utils/font/fonts.dart';
 import '../screen/add_currency.dart';
 
 class Addcategoryphone extends StatelessWidget {

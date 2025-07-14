@@ -1,17 +1,25 @@
 import 'package:flutter/material.dart';
+import 'core/blocObserver.dart';
 import 'core/utils/font/fonts.dart';
 import 'core/utils/route/approutes.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'core/utils/services/services_locator.dart';
 import 'feature/barnavigation/cubitbar/bar_cubit.dart';
 
 
 void main() {
+  setup();
+  Bloc.observer = MyBlocObserver();
+  WidgetsFlutterBinding.ensureInitialized();
+
   runApp(    BlocProvider(
     create: (_) => BarCubit(),
 
     child: MyApp(),
   ));
+
+
 }
 
 class MyApp extends StatelessWidget {

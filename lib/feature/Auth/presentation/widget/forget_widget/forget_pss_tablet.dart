@@ -1,20 +1,28 @@
 import 'package:flutter/material.dart';
-
-import '../../../../core/utils/colors/colors.dart';
-import '../../../../core/utils/image/images.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lahj_center/feature/Auth/presentation/cubit/auth_cubit.dart';
+import '../../../../../core/const/widget/custom_button.dart';
+import '../../../../../core/utils/colors/colors.dart';
+import '../../../../../core/utils/image/images.dart';
+import '../../../../../core/utils/route/approutes.dart';
 import '../login_widget/tablet_loginscreen.dart'; // تأكد من استيراد مكتبة الماتيريال
 
 
 class ForgetPssTablet extends StatefulWidget {
-  const ForgetPssTablet({super.key});
-
+  const ForgetPssTablet({super.key, });
   @override
   State<ForgetPssTablet> createState() => _ForgetPssTabletState();
 }
 
 class _ForgetPssTabletState extends State<ForgetPssTablet> {
-  final TextEditingController emailController = TextEditingController();
+@override
+final TextEditingController emailController = TextEditingController();
 
+@override
+void dispose() {
+  emailController.dispose();
+  super.dispose();
+}
   @override
   Widget build(BuildContext context) {
     double width = MediaQuery.of(context).size.width;
@@ -55,12 +63,42 @@ class _ForgetPssTabletState extends State<ForgetPssTablet> {
                         ),
                       ),
                       const SizedBox(height: 20),
-                      ElevatedButton(
-                        onPressed: () {
-                          // Action for forget password
+                      BlocConsumer<AuthCubit, AuthState>(
+                        listener: (context, state) {
+                          if (state is AuthFailure) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text(state.message)),
+                            );
+                          } else if (state is AuthForgetPasswordSuccess) {
+                            Navigator.pushNamed(context, Routes.resetpassword);
+
+
+                          }
                         },
-                        child: Text("إرسال"),
-                      ),
+  builder: (context, state) {
+    return SizedBox(
+                        width: double.infinity,
+                        child: CustomButton(
+                          name: 'فقدان كلمه السر',
+                          onTap: () {
+                            final email = emailController.text.trim();
+
+                            if (email.isEmpty) {
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text("يرجى إدخال الايميل"),
+                                ),
+                              );
+                            } else {
+                              context.read<AuthCubit>().forgetPassword(
+                                email: email,
+                              );
+                            }
+                          },
+                        ),
+                      );
+  },
+),
                     ],
                   ),
                 ),
