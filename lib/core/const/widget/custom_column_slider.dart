@@ -104,8 +104,11 @@ class CustomColumnSlider extends StatelessWidget {
               title: "المنتجات",
               icon: Images.shoppingbag,
               isSelected: cubit.selectedIndex == 2,
-              onTap: () => cubit.changePage(2),
-            ),
+              onTap: () {
+                cubit.changeitems(0);
+                cubit.changePage(2);
+
+              }      ),
             MenuItem(
               title: "بلاغ عن التعليقات",
               icon: Images.alert,
@@ -123,14 +126,21 @@ class CustomColumnSlider extends StatelessWidget {
               title: "اضافه عملات",
               icon: Images.currency,
               isSelected: cubit.selectedIndex == 5,
-              onTap: () => cubit.changePage(5),
+              onTap: () {
+    cubit.changeitems(0);
+    cubit.changePage(5);
+    }
+
             ),
             MenuItem(
               title: "اضافه فئات",
               icon: Images.addcategory,
               isSelected: cubit.selectedIndex == 6,
-              onTap: () => cubit.changePage(6),
-            ),
+              onTap: () {
+                cubit. changeitems(0);
+                cubit.changePage(6);
+
+              }    ),
             const Spacer(),
             Container(
               alignment: Alignment.centerRight,

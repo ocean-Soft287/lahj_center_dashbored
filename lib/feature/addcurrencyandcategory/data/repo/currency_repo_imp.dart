@@ -5,6 +5,7 @@ import 'package:lahj_center/core/utils/api/endpoint.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/data/model/currency.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/data/repo/currency_repo.dart';
 
+
 class CurrencyRepoImp implements Currencyrepo {
   final DioConsumer dioConsumer;
 
@@ -14,38 +15,33 @@ class CurrencyRepoImp implements Currencyrepo {
   Future<Either<Failure, List<Currency>>> getcurrency() async {
     try {
       final response = await dioConsumer.get(EndPoint.getcurrency);
-
-      if (response is Map<String, dynamic> && response['data'] is List) {
-        final List<Currency> currencies = (response['data'] as List)
+      final List<Currency> currencies = (response as List)
             .map((e) => Currency.fromJson(e))
             .toList();
         return Right(currencies);
-      } else {
-        return Left(ServerFailure('البيانات غير متوقعة'));
-      }
+
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
   }
 
   @override
-  Future<Either<Failure, Currency>> addCurrency(String namearabic,String nameenglish) async {
+  Future<Either<Failure, Currency>> addCurrency(String namearabic, String nameenglish) async {
     try {
       final response = await dioConsumer.post(
         EndPoint.addcurrrency,
-        data:
-        {
+        data: {
           "arName": namearabic,
-          "enName": nameenglish
-        }
+          "enName": nameenglish,
+        },
       );
+      final json = response as Map<String, dynamic>;
+      final model = Currency.fromJson(json);
 
-      if (response is Map<String, dynamic> && response['data'] != null) {
-        final Currency newCurrency = Currency.fromJson(response['data']);
-        return Right(newCurrency);
-      } else {
-        return Left(ServerFailure('فشل في إضافة العملة: بيانات غير متوقعة'));
-      }
+      return Right(model);
+
+
+
     } catch (e) {
       return Left(ServerFailure(e.toString()));
     }
@@ -63,8 +59,8 @@ class CurrencyRepoImp implements Currencyrepo {
         },
       );
 
-      if (response is Map<String, dynamic> && response['data'] != null) {
-        final Currency newCurrency = Currency.fromJson(response['data']);
+      if (response is Map<String, dynamic>) {
+        final Currency newCurrency = Currency.fromJson(response);
         return Right(newCurrency);
       } else {
         return Left(ServerFailure('فشل في تعديل العملة: بيانات غير متوقعة'));
@@ -74,15 +70,15 @@ class CurrencyRepoImp implements Currencyrepo {
     }
   }
 
+
   @override
   Future<Either<Failure, String>> deleteCurrency(int id) async {
     try {
       final response = await dioConsumer.delete(
-        '${EndPoint.baseUrl}/api/Currency/deleteCurrency',
-        queryParameters: {'id': id},
+        EndPoint.deleteCurrency(id),
       );
 
-      if (response.statusCode == 200) {
+      if (response.toString() == "Currency Deleted Successfully") {
         return Right('تم حذف العملة بنجاح'); // رسالة نجاح
       } else {
         return Left(ServerFailure('فشل في حذف العملة: استجابة غير متوقعة'));

@@ -1,24 +1,22 @@
-class Currency {
+class Group {
   final int id;
   final String arName;
   final String enName;
 
-  Currency({
+  Group({
     required this.id,
     required this.arName,
     required this.enName,
   });
 
-  // fromJson
-  factory Currency.fromJson(Map<String, dynamic> json) {
-    return Currency(
-      id: json['id']??"0",
-      arName: json['arName'] ?? '',
-      enName: json['enName'] ?? '',
+  factory Group.fromJson(Map<String, dynamic> json) {
+    return Group(
+      id: json['id'],
+      arName: json['arName'],
+      enName: json['enName'],
     );
   }
 
-  // toJson
   Map<String, dynamic> toJson() {
     return {
       'id': id,

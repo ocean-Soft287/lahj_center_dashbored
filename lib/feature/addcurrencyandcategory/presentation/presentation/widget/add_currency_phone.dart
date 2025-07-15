@@ -1,11 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/currency_cubit/currency_cubit.dart';
+import 'package:lahj_center/feature/barnavigation/cubitbar/bar_cubit.dart';
 import '../../../../../core/const/widget/custom_button.dart';
 import '../../../../../core/const/widget/textformcrud.dart';
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
-
 
 class AddCurrencyPhone extends StatelessWidget {
   final TextEditingController currency;
@@ -26,15 +27,42 @@ class AddCurrencyPhone extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ====== العنوان الرئيسي ======
-            Text(
-              "إضافة عملات",
-              style: TextStyle(
-                fontFamily: Fonts.cairo,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Appcolors.kblue,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                Text(
+                  "إضافة عملات",
+                  style: TextStyle(
+                    fontFamily: Fonts.cairo,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Appcolors.kblue,
+                  ),
+                ),
+
+
+                BlocBuilder<BarCubit, BarState>(
+  builder: (context, state) {
+    return Align(
+                  alignment: Alignment.topLeft,
+                  child: TextButton.icon(
+                    onPressed: () {
+                      context.read<BarCubit>().changeitems(1);
+                    },
+                    icon: const Icon(Icons.list),
+                    label: const Text("عرض العملات",     style: TextStyle(
+                      fontFamily: Fonts.cairo,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: Appcolors.kblue,
+                    ),),
+                  ),
+                );
+  },
+),
+
+              ],
             ),
             const SizedBox(height: 20),
 
@@ -74,14 +102,26 @@ class AddCurrencyPhone extends StatelessWidget {
                     const SizedBox(height: 20),
 
                     // ====== الأزرار ======
-                    Row(
+                    BlocConsumer<CurrencyCubit, CurrencyState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+    return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(child: CustomButton(name: 'إضافة', onTap: () {})),
+                        Expanded(child: CustomButton(name: 'إضافة', onTap: () {
+
+                          context.read<CurrencyCubit>().addCurrency(currency.text, currencyenglish.text);
+
+
+                        })),
                         const SizedBox(width: 16),
                         Expanded(child: CustomButton(name: 'إلغاء', onTap: () {})),
                       ],
-                    ),
+                    );
+  },
+)
                   ],
                 ),
               ),

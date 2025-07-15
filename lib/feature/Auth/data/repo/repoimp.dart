@@ -52,12 +52,21 @@ class Loginrepoimp implements LoginRepo{
           'rememberMe': true,
           "deviceToken": "P@ssw0rd",
         },
+        withAuth: false,
+
       );
-      print("responseresponseresponse$response");
 
       print(response);
       final json = response as Map<String, dynamic>;
       final model = UserModel.fromJson(json);
+      await SecureStorageService.write(SecureStorageService.token, model.token);
+      await SecureStorageService.write(
+        SecureStorageService.role,
+        model.role,
+      );
+      final token= SecureStorageService.read(SecureStorageService.token);
+      final role=SecureStorageService.read(SecureStorageService.role);
+print(token);
 
       if (model.token.isEmpty) {
         return left(ServerFailure("Missing token in response."));
@@ -69,14 +78,8 @@ if(!model.isAdmin)
 
 }
 
-      // SecureStorage writes
-      // await SecureStorageService.write(SecureStorageService.token, model.token);
-      // await SecureStorageService.write(SecureStorageService.role, model.role);
-      //
-      // final token = await SecureStorageService.read(SecureStorageService.token);
-      // final role = await SecureStorageService.read(SecureStorageService.role);
-      // print("token$token");
-      // print("role$role");
+
+
 
       return right(model);
     } on DioException catch (e) {

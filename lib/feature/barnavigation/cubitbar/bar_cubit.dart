@@ -1,19 +1,17 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:meta/meta.dart';
-
 import '../../addcurrencyandcategory/presentation/presentation/screen/add_category.dart';
 import '../../addcurrencyandcategory/presentation/presentation/screen/add_currency.dart';
+import '../../addcurrencyandcategory/presentation/presentation/screen/currency_data_page.dart';
+import '../../addcurrencyandcategory/presentation/presentation/screen/category_data_page.dart';
 import '../../items/presentaion/screen/addritems_responsive.dart';
 import '../../items/presentaion/screen/edit_item.dart';
 import '../../items/presentaion/screen/items_responsive.dart';
 import '../../mange_orders/screen/Responsive_mangeorder.dart';
 import '../../report/presentation/screen/view_report/view_report.dart';
 import '../../users/presentation/view/user_responsive.dart';
-
 part 'bar_state.dart';
-
-
 
 class BarCubit extends Cubit<BarState> {
   BarCubit() : super(BarInitial());
@@ -41,7 +39,7 @@ class BarCubit extends Cubit<BarState> {
     item == 0 ? ItemsResponsive() : const EditItem(),
     ViewReportScreen(),
     UserResponsive(),
-    AddCurrency(),
-    Addcategory(),
+    item == 0 ? AddCurrency() : CurrencyDataPage(),
+    item == 0 ? Addcategory() : CategoryDataPage(),
   ];
 }

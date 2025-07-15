@@ -1,18 +1,18 @@
-class Currency {
+class Services {
   final int id;
   final String arName;
   final String enName;
 
-  Currency({
+  Services({
     required this.id,
     required this.arName,
     required this.enName,
   });
 
   // fromJson
-  factory Currency.fromJson(Map<String, dynamic> json) {
-    return Currency(
-      id: json['id']??"0",
+  factory Services.fromJson(Map<String, dynamic> json) {
+    return Services(
+      id: json['id'] ?? 0,
       arName: json['arName'] ?? '',
       enName: json['enName'] ?? '',
     );

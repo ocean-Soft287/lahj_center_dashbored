@@ -8,19 +8,6 @@ class EndPoint {
 
   // Member
   static String addmember = "$baseUrl/Dashboard/addMember";
-///Service
-  static String getallServices = "$baseUrl/Service/getAllServices";
-  static String Addservices = "$baseUrl/Service/addService";
-  static String updateservices = "$baseUrl/Service/updateService";
-  static String deleteService = "$baseUrl/Service/deleteService";
-
-
-
-
-
-
-
-
 
   // Advertisement
   static String getAllAdvertisements = "$baseUrl/Advertisement/GetAll";
@@ -49,17 +36,38 @@ class EndPoint {
   static String deleteCommentReport = "$baseUrl/Advertisement/DeleteCommentReport/{Id}";
 
   // Currency
-  static String getcurrency = "$baseUrl/Currency/getAllCurrencies";
-  static String addcurrrency = "$baseUrl/Currency/addCurrency";
-  static String updatecurrency = "$baseUrl/Currency/addCurrency";
-  static String deletecurrency = "$baseUrl/Currency/deleteCurrency";
-
+  static String getcurrency =    "$baseUrl/Currency/getAllCurrencies";
+  static String addcurrrency =   "$baseUrl/Currency/addCurrency";
+  static String updatecurrency = "$baseUrl/Currency/updateCurrency";
+  static String deleteCurrency(int id) {
+    return "$baseUrl/Currency/deleteCurrency?id=$id";
+  }
   // Governorate
   static String getAllGovernorates = "$baseUrl/Governorate/getAllGovernorates";
   static String addGovernorate = "$baseUrl/Governorate/addGovernorate";
   static String addGovernorateFromBody = "$baseUrl/Governorate/addGovernorateFromBody";
   static String updateGovernorate = "$baseUrl/Governorate/updateGovernorate";
-  static String deleteGovernorate = "$baseUrl/Governorate/deleteGovernorate";
+  static String deleteGovernorate(int id) {
+    return "$baseUrl/Governorate/deleteGovernorate?id=$id";
+  }
+
+  ///Service
+  static String getallServices = "$baseUrl/Service/getAllServices";
+  static String Addservices = "$baseUrl/Service/addService";
+  static String updateservices = "$baseUrl/Service/updateService";
+  static String deleteService(int id) {
+  return   "$baseUrl/Service/deleteService?id=$id";
+
+  }
+
+  ///Group
+  static String getallGroups = "$baseUrl/Group/getAllGroups";
+  static String addGroups = "$baseUrl/Group/addGroup";
+  static String updateGroups = "$baseUrl/Group/updateGroup";
+  static String deleteGroup(int id) {
+    return "$baseUrl/Group/deleteGroup?id=$id";
+  }
+
 
 
 

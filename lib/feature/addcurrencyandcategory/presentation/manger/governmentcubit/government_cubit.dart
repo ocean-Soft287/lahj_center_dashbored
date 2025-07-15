@@ -20,51 +20,53 @@ class GovernmentCubit extends Cubit<GovernmentState> {
           (failure) => emit(GovernmentError(_mapFailureToMessage(failure))),
           (data) {
         governments = data;
-        emit(GovernmentLoaded(data));
+        emit(GovernmentLoaded(List.from(governments)));
       },
     );
   }
 
   Future<void> addGovernment(String arName, String enName) async {
-    emit(GovernmentLoading());
     final result = await governmentrepo.addGovernment(arName, enName);
     result.fold(
-          (failure) => emit(GovernmentError(_mapFailureToMessage(failure))),
+          (failure) => emit(GovernmentActionError(_mapFailureToMessage(failure))),
           (addedGov) {
         governments.add(addedGov);
         emit(GovernmentAdded(addedGov));
-        emit(GovernmentLoaded(governments)); // لتحديث القائمة
+        _emitUpdatedGovernments();
       },
     );
   }
 
   Future<void> updateGovernment(int id, String arName, String enName) async {
-    emit(GovernmentLoading());
     final result = await governmentrepo.updateGovernment(id, arName, enName);
     result.fold(
-          (failure) => emit(GovernmentError(_mapFailureToMessage(failure))),
+          (failure) => emit(GovernmentActionError(_mapFailureToMessage(failure))),
           (updatedGov) {
         final index = governments.indexWhere((g) => g.id == id);
         if (index != -1) {
           governments[index] = updatedGov;
-          emit(GovernmentUpdated(updatedGov));
-          emit(GovernmentLoaded(governments));
         }
+        emit(GovernmentUpdated(updatedGov));
+        _emitUpdatedGovernments();
       },
     );
   }
 
   Future<void> deleteGovernment(int id) async {
-    emit(GovernmentLoading());
+    emit(GovernmentActionLoading());
     final result = await governmentrepo.deleteGovernment(id);
     result.fold(
-          (failure) => emit(GovernmentError(_mapFailureToMessage(failure))),
+          (failure) => emit(GovernmentActionError(_mapFailureToMessage(failure))),
           (successMessage) {
         governments.removeWhere((g) => g.id == id);
         emit(GovernmentDeleted(successMessage));
-        emit(GovernmentLoaded(governments));
+        _emitUpdatedGovernments();
       },
     );
+  }
+
+  void _emitUpdatedGovernments() {
+    emit(GovernmentLoaded(List.from(governments)));
   }
 
   String _mapFailureToMessage(Failure failure) {

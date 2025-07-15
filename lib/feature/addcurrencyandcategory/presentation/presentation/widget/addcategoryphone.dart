@@ -1,10 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/group_cubit/group_cubit.dart';
 
 import '../../../../../core/const/widget/custom_button.dart';
 import '../../../../../core/const/widget/textformcrud.dart';
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
+import '../../../../barnavigation/cubitbar/bar_cubit.dart';
 import '../screen/add_currency.dart';
 
 class Addcategoryphone extends StatelessWidget {
@@ -21,15 +24,43 @@ class Addcategoryphone extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // ====== العنوان الرئيسي ======
-            Text(
-              "إضافة فئه",
-              style: TextStyle(
-                fontFamily: Fonts.cairo,
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: Appcolors.kblue,
-              ),
+
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+
+                Text(
+                  "إضافة فئه",
+                  style: TextStyle(
+                    fontFamily: Fonts.cairo,
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                    color: Appcolors.kblue,
+                  ),
+                ),
+
+                BlocBuilder<BarCubit, BarState>(
+                  builder: (context, state) {
+                    return Align(
+                      alignment: Alignment.topLeft,
+                      child: TextButton.icon(
+                        onPressed: () {
+                          context.read<BarCubit>().changeitems(1);
+
+                        },
+                        icon: const Icon(Icons.list),
+                        label: const Text("عرض الفئات",     style: TextStyle(
+                          fontFamily: Fonts.cairo,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          color: Appcolors.kblue,
+                        ),),
+                      ),
+                    );
+                  },
+                ),
+
+              ],
             ),
             const SizedBox(height: 20),
 
@@ -56,27 +87,38 @@ class Addcategoryphone extends StatelessWidget {
                   children: [
                     // ====== الحقول ======
                     Textformcrud(
-                      controller: currency,
+                      controller: category,
                       name: 'اسم الفئه بالعربي *',
                       nameinfo: 'أدخل اسم الفئه بالعربي',
                     ),
                     const SizedBox(height: 12),
                     Textformcrud(
-                      controller: currencyenglish,
+                      controller: categoryenglish,
                       name: 'اسم الفئه بالإنجليزية *',
                       nameinfo: 'أدخل اسم الفئه بالإنجليزية',
                     ),
                     const SizedBox(height: 20),
 
                     // ====== الأزرار ======
-                    Row(
+                    BlocConsumer<GroupCubit, GroupState>(
+  listener: (context, state) {
+    // TODO: implement listener
+  },
+  builder: (context, state) {
+
+    return Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Expanded(child: CustomButton(name: 'إضافة', onTap: () {})),
+                        Expanded(child: CustomButton(name: 'إضافة', onTap: () {
+                          context.read<GroupCubit>().addGroup(category.text, categoryenglish.text);
+
+                        })),
                         const SizedBox(width: 16),
                         Expanded(child: CustomButton(name: 'إلغاء', onTap: () {})),
                       ],
-                    ),
+                    );
+  },
+),
                   ],
                 ),
               ),

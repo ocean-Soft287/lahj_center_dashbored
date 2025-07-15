@@ -38,12 +38,15 @@ class DioConsumer extends ApiConsumer {
 
   Future<Map<String, String>> _buildHeaders({bool withAuth = true}) async {
     final token = await SecureStorageService.read(SecureStorageService.token);
+    print("🔑 Token being sent: $token");
+
     return {
       'Accept-Language': 'ar',
-      if (token != null)
+      if (withAuth && token != null)
         'Authorization': 'Bearer $token',
     };
   }
+
 
   /// Use this to send body as JSON with GET (required by some APIs)
   @override
@@ -179,9 +182,9 @@ class DioConsumer extends ApiConsumer {
 
   void handleDioExceptions(DioException e) {
     if (e.response != null) {
-      // print('Dio error: ${e.response!.statusCode} - ${e.response!.data}');
+      print('Dio error: ${e.response!.statusCode} - ${e.response!.data}');
     } else {
-//      print('Dio error: ${e.message}');
+      print('Dio error: ${e.message}');
     }
   }
 }

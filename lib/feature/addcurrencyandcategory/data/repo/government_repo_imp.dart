@@ -19,7 +19,7 @@ class Governmentrepoimp implements Governmentrepo {
         data: {'arName': arName, 'enName': enName},
       );
 
-      if (response is Map<String, dynamic> && response['data'] != null) {
+      if (response is Map<String, dynamic> && response != null) {
         final Government government = Government.fromJson(response['data']);
         return Right(government);
       } else {
