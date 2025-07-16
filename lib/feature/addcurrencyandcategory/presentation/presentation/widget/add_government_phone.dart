@@ -1,16 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/group_cubit/group_cubit.dart';
 import '../../../../../core/const/widget/custom_button.dart';
 import '../../../../../core/const/widget/textformcrud.dart';
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
 import '../../../../barnavigation/cubitbar/bar_cubit.dart';
+import '../../manger/currency_cubit/currency_cubit.dart';
 
-class Addcategoryphone extends StatelessWidget {
-  const Addcategoryphone({super.key, required this.category, required this.categoryenglish});
-  final TextEditingController category;
-  final TextEditingController categoryenglish;
+
+class AddGovernmentPhone extends StatelessWidget {
+  final TextEditingController government;
+  final TextEditingController governmentenglish;
+
+  const AddGovernmentPhone({
+    super.key,
+    required this.government,
+    required this.governmentenglish,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -21,13 +27,11 @@ class Addcategoryphone extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-
                 Text(
-                  "إضافة فئه",
+                  "إضافة محافظة",
                   style: TextStyle(
                     fontFamily: Fonts.cairo,
                     fontSize: 18,
@@ -35,7 +39,6 @@ class Addcategoryphone extends StatelessWidget {
                     color: Appcolors.kblue,
                   ),
                 ),
-
                 BlocBuilder<BarCubit, BarState>(
                   builder: (context, state) {
                     return Align(
@@ -43,27 +46,28 @@ class Addcategoryphone extends StatelessWidget {
                       child: TextButton.icon(
                         onPressed: () {
                           context.read<BarCubit>().changeitems(1);
-
                         },
                         icon: const Icon(Icons.list),
-                        label: const Text("عرض الفئات",     style: TextStyle(
-                          fontFamily: Fonts.cairo,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                          color: Appcolors.kblue,
-                        ),),
+                        label: const Text(
+                          "عرض المحافظات",
+                          style: TextStyle(
+                            fontFamily: Fonts.cairo,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                            color: Appcolors.kblue,
+                          ),
+                        ),
                       ),
                     );
                   },
                 ),
-
               ],
             ),
             const SizedBox(height: 20),
 
             // ====== الصندوق الأبيض ======
             Container(
-              height: MediaQuery.of(context).size.height*.80,
+              height: MediaQuery.of(context).size.height * .80,
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: Appcolors.kwhite,
@@ -84,38 +88,52 @@ class Addcategoryphone extends StatelessWidget {
                   children: [
                     // ====== الحقول ======
                     Textformcrud(
-                      controller: category,
-                      name: 'اسم الفئه بالعربي *',
-                      nameinfo: 'أدخل اسم الفئه بالعربي',
+                      controller: government,
+                      name: 'اسم المحافظة بالعربي *',
+                      nameinfo: 'أدخل اسم المحافظة بالعربي',
                     ),
                     const SizedBox(height: 12),
                     Textformcrud(
-                      controller: categoryenglish,
-                      name: 'اسم الفئه بالإنجليزية *',
-                      nameinfo: 'أدخل اسم الفئه بالإنجليزية',
+                      controller: governmentenglish,
+                      name: 'اسم المحافظة بالإنجليزية *',
+                      nameinfo: 'أدخل اسم المحافظة بالإنجليزية',
                     ),
                     const SizedBox(height: 20),
 
                     // ====== الأزرار ======
-                    BlocConsumer<GroupCubit, GroupState>(
-  listener: (context, state) {
-    // TODO: implement listener
-  },
-  builder: (context, state) {
-
-    return Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(child: CustomButton(name: 'إضافة', onTap: () {
-                          context.read<GroupCubit>().addGroup(category.text, categoryenglish.text);
-
-                        })),
-                        const SizedBox(width: 16),
-                        Expanded(child: CustomButton(name: 'إلغاء', onTap: () {})),
-                      ],
-                    );
-  },
-),
+                    BlocConsumer<CurrencyCubit, CurrencyState>(
+                      listener: (context, state) {
+                        // يمكنك إضافة إشعار نجاح/فشل هنا
+                      },
+                      builder: (context, state) {
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: CustomButton(
+                                name: 'إضافة',
+                                onTap: () {
+                                  context.read<CurrencyCubit>().addCurrency(
+                                    government.text,
+                                    governmentenglish.text,
+                                  );
+                                },
+                              ),
+                            ),
+                            const SizedBox(width: 16),
+                            Expanded(
+                              child: CustomButton(
+                                name: 'إلغاء',
+                                onTap: () {
+                                  government.clear();
+                                  governmentenglish.clear();
+                                },
+                              ),
+                            ),
+                          ],
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),

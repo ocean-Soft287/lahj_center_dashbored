@@ -17,7 +17,10 @@ class GovernmentCubit extends Cubit<GovernmentState> {
     emit(GovernmentLoading());
     final result = await governmentrepo.getGovernment();
     result.fold(
-          (failure) => emit(GovernmentError(_mapFailureToMessage(failure))),
+          (failure) {
+            print(failure.message);
+            emit(GovernmentError(_mapFailureToMessage(failure)));
+          },
           (data) {
         governments = data;
         emit(GovernmentLoaded(List.from(governments)));

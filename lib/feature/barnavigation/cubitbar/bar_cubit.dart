@@ -1,9 +1,13 @@
 import 'package:bloc/bloc.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:lahj_center/feature/addcurrencyandcategory/presentation/presentation/screen/service_data_page.dart';
 import '../../addcurrencyandcategory/presentation/presentation/screen/add_category.dart';
 import '../../addcurrencyandcategory/presentation/presentation/screen/add_currency.dart';
+import '../../addcurrencyandcategory/presentation/presentation/screen/add_government.dart';
+import '../../addcurrencyandcategory/presentation/presentation/screen/add_services.dart';
 import '../../addcurrencyandcategory/presentation/presentation/screen/currency_data_page.dart';
 import '../../addcurrencyandcategory/presentation/presentation/screen/category_data_page.dart';
+import '../../addcurrencyandcategory/presentation/presentation/screen/government_data_page.dart';
 import '../../items/presentaion/screen/addritems_responsive.dart';
 import '../../items/presentaion/screen/edit_item.dart';
 import '../../items/presentaion/screen/items_responsive.dart';
@@ -40,5 +44,8 @@ class BarCubit extends Cubit<BarState> {
     UserResponsive(),
     item == 0 ? AddCurrency() : CurrencyDataPage(),
     item == 0 ? Addcategory() : CategoryDataPage(),
+
+item==0?AddService():ServiceDataPage(),
+    item == 0 ?   AddGovernment():GovernmentDataPage()
   ];
 }

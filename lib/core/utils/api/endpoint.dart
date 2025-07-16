@@ -65,11 +65,8 @@ class EndPoint {
   static String addGroups = "$baseUrl/Group/addGroup";
   static String updateGroups = "$baseUrl/Group/updateGroup";
   static String deleteGroup(int id) {
+
     return "$baseUrl/Group/deleteGroup?id=$id";
+
   }
-
-
-
-
-
-}
+  }

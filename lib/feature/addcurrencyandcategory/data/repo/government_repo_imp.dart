@@ -51,14 +51,15 @@ class Governmentrepoimp implements Governmentrepo {
   @override
   Future<Either<Failure, List<Government>>> getGovernment() async {
     try {
-      final response = await dioConsumer.get(EndPoint.getAllGovernorates); // استخدام النهاية الصحيحة من الصورة
-      if (response is Map<String, dynamic> && response['data'] is List) {
-        final List<Government> governments = (response['data'] as List)
-            .map((e) => Government.fromJson(e))
+      final response = await dioConsumer.get(EndPoint.getAllGovernorates);
+
+      if (response is List) {
+        final List<Government> governments = response
+            .map((e) => Government.fromJson(e as Map<String, dynamic>))
             .toList();
         return Right(governments);
       } else {
-        return Left(ServerFailure('البيانات غير متوقعة'));
+        return Left(ServerFailure('فشل في جلب المحافظات: البيانات غير متوقعة'));
       }
     } catch (e) {
       return Left(ServerFailure(e.toString()));

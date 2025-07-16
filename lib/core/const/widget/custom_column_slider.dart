@@ -141,6 +141,26 @@ class CustomColumnSlider extends StatelessWidget {
                 cubit.changePage(6);
 
               }    ),
+            MenuItem(
+                title: "اضافه خدمات",
+
+                icon: Images.addcategory,
+                isSelected: cubit.selectedIndex == 6,
+                onTap: () {
+                  cubit. changeitems(0);
+                  cubit.changePage(7);
+
+                }    ),
+            MenuItem(
+                title: "اضافه محافظات ",
+
+                icon: Images.addcategory,
+                isSelected: cubit.selectedIndex == 6,
+                onTap: () {
+                  cubit. changeitems(0);
+                  cubit.changePage(8);
+
+                }    ),
             const Spacer(),
             Container(
               alignment: Alignment.centerRight,

@@ -20,8 +20,8 @@ class MobileLoginScreen extends StatefulWidget {
 class _MobileLoginScreenState extends State<MobileLoginScreen> {
   @override
   void dispose() {
-    widget.emailController.dispose();
-    widget.passwordController.dispose();
+    // widget.emailController.dispose();
+    // widget.passwordController.dispose();
     super.dispose();
   }
 

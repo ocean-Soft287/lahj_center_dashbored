@@ -22,8 +22,8 @@ class _TabletLoginScreenState extends State<TabletLoginScreen> {
 
   @override
   void dispose() {
-    widget.emailController.dispose();
-    widget.passwordController.dispose();
+    // widget.emailController.dispose();
+    // widget.passwordController.dispose();
     super.dispose();
   }
   @override
