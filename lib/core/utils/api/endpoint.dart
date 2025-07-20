@@ -7,7 +7,7 @@ class EndPoint {
   static String changePassconfirm = "$baseUrl/Member/resetpassword";
 
   // Member
-  static String addmember = "$baseUrl/Dashboard/addMember";
+  static String getallmembers="$baseUrl/Member/getAllMembers";
 
   // Advertisement
   static String getAllAdvertisements = "$baseUrl/Advertisement/GetAll";
@@ -34,7 +34,6 @@ class EndPoint {
   static String getAllCommentReports = "$baseUrl/Advertisement/getAllCommentReports";
   static String approvalCommentReport = "$baseUrl/Advertisement/ApprovalCommentReport/{Id}";
   static String deleteCommentReport = "$baseUrl/Advertisement/DeleteCommentReport/{Id}";
-
   // Currency
   static String getcurrency =    "$baseUrl/Currency/getAllCurrencies";
   static String addcurrrency =   "$baseUrl/Currency/addCurrency";

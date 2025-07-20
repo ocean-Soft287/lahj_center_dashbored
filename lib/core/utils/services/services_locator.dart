@@ -11,6 +11,12 @@ import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/c
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/governmentcubit/government_cubit.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/group_cubit/group_cubit.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/services_cubit/services_cubit.dart';
+import 'package:lahj_center/feature/report/data/report_repo/report_repo.dart';
+import 'package:lahj_center/feature/report/data/report_repo/report_repo_imp.dart';
+import 'package:lahj_center/feature/report/presentation/manger/report_cubit.dart';
+import 'package:lahj_center/feature/users/data/userrepo/user_repo.dart';
+import 'package:lahj_center/feature/users/data/userrepo/user_repo_imp.dart';
+import 'package:lahj_center/feature/users/presentation/manger/user_cubit.dart';
 
 import '../../../feature/Auth/data/repo/repo.dart';
 import '../../../feature/Auth/data/repo/repoimp.dart';
@@ -59,4 +65,11 @@ void setup() {
   ///services
   sl.registerLazySingleton<ServicesRepo>(() => ServicesRepoImp(dioConsumer: sl<DioConsumer>()));
   sl.registerFactory<ServicesCubit>(() => ServicesCubit(sl<ServicesRepo>()));
+
+  ///users
+  sl.registerLazySingleton<UserRepo>(() => UserRepoImp(dioConsumer: sl<DioConsumer>()));
+  sl.registerFactory<UserCubit>(() => UserCubit(sl<UserRepo>()));
+  ///reportcomment
+  sl.registerLazySingleton<Reportrepo>(() => Reportrepoimp(dioConsumer: sl<DioConsumer>()));
+  sl.registerFactory<ReportCubit>(() => ReportCubit(sl<Reportrepo>()));
 }
