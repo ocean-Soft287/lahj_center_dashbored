@@ -1,21 +1,11 @@
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lahj_center/feature/Auth/presentation/widget/change_password/change_password_tabler.dart';
-
 import '../../../../core/utils/appstyle/size_config.dart';
 import '../cubit/auth_cubit.dart';
 import '../widget/change_password/change_password_phone.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-
-import '../../../../core/utils/appstyle/size_config.dart';
-import '../cubit/auth_cubit.dart';
-import '../widget/change_password/change_password_phone.dart';
-import '../widget/change_password/change_password_tabler.dart';
 
 class ResponsiveResetLogin extends StatefulWidget {
   const ResponsiveResetLogin({super.key});

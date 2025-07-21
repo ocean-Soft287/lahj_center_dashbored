@@ -27,4 +27,5 @@ class Reportrepoimp implements Reportrepo {
       return Left(ServerFailure(e.toString()));
     }
   }
+//
 }

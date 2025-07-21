@@ -27,7 +27,28 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
+  void delete( String id)async{
+    final Either<Failure,String>response=await userRepo.deleteuserandallinformation(id);
+    response.fold((failure) {
+      emit(DeleteUserError());
+    }, (data) {
+      emit(DeleteSuccess());
+      getUsers();
+    });
+
+  }
+
+  void block( String id)async{
+    final Either<Failure,String>response=await userRepo.deleteandblock(id);
+    response.fold((failure) {
+      emit(DeleteUserError());
+    }, (data) {
+      emit(DeleteSuccess());
+      getUsers();
+    });
+
+  }
   String _mapFailureToMessage(Failure failure) {
-    return failure.message ?? 'حدث خطأ غير متوقع';
+    return failure.message;
   }
 }

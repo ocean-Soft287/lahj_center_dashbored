@@ -1,7 +1,4 @@
 import 'dart:io';
-import 'dart:typed_data';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -39,7 +36,7 @@ class UserDialog extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final _formKey = GlobalKey<FormState>();
-    final _roles = ['Admin', 'User', 'Viewer'];
+    final _roles = ['Admin', 'Member',];
     final ImagePicker picker = ImagePicker();
 
     File? selectedImage;

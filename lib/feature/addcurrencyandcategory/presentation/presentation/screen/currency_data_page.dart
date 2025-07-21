@@ -2,18 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/data/model/currency.dart';
-
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
 import '../../manger/currency_cubit/currency_cubit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:get_it/get_it.dart';
-import 'package:lahj_center/feature/addcurrencyandcategory/data/model/currency.dart';
 
-import '../../../../../core/utils/colors/colors.dart';
-import '../../../../../core/utils/font/fonts.dart';
-import '../../manger/currency_cubit/currency_cubit.dart';
 
 class CurrencyDataPage extends StatefulWidget {
   const CurrencyDataPage({super.key});

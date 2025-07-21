@@ -56,7 +56,6 @@ class Loginrepoimp implements LoginRepo{
 
       );
 
-      print(response);
       final json = response as Map<String, dynamic>;
       final model = UserModel.fromJson(json);
       await SecureStorageService.write(SecureStorageService.token, model.token);

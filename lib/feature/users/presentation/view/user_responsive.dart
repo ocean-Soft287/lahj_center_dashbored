@@ -1,4 +1,3 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
@@ -19,7 +18,7 @@ final TextEditingController phoneController = TextEditingController();
 final TextEditingController imageController = TextEditingController();
 final TextEditingController activityController = TextEditingController();
 final TextEditingController deviceTokenController = TextEditingController();
-String selectedRole = 'User';
+String selectedRole = 'Member';
 
 class UserResponsive extends StatelessWidget {
   const UserResponsive({super.key});
@@ -229,15 +228,17 @@ class UserResponsive extends StatelessWidget {
                                                       content:
                                                           'هل أنت متأكد أنك تريد حظر هذا المستخدم؟',
                                                       onConfirm: () {
-                                                        ScaffoldMessenger.of(
-                                                          context,
-                                                        ).showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                              'تم حظر المستخدم بنجاح',
-                                                            ),
-                                                          ),
-                                                        );
+                                                        context.read<UserCubit>().block(user.id);
+
+                                                        // ScaffoldMessenger.of(
+                                                        //   context,
+                                                        // ).showSnackBar(
+                                                        //   const SnackBar(
+                                                        //     content: Text(
+                                                        //       'تم حظر المستخدم بنجاح',
+                                                        //     ),
+                                                        //   ),
+                                                        // );
                                                       },
                                                     );
                                                   },
@@ -255,15 +256,16 @@ class UserResponsive extends StatelessWidget {
                                                       content:
                                                           'هل أنت متأكد أنك تريد حذف هذا المستخدم؟',
                                                       onConfirm: () {
-                                                        ScaffoldMessenger.of(
-                                                          context,
-                                                        ).showSnackBar(
-                                                          const SnackBar(
-                                                            content: Text(
-                                                              'تم حذف المستخدم بنجاح',
-                                                            ),
-                                                          ),
-                                                        );
+                                                  context.read<UserCubit>().delete(user.id);
+                                                        // ScaffoldMessenger.of(
+                                                        //   context,
+                                                        // ).showSnackBar(
+                                                        //   const SnackBar(
+                                                        //     content: Text(
+                                                        //       'تم حذف المستخدم بنجاح',
+                                                        //     ),
+                                                        //   ),
+                                                        // );
                                                       },
                                                     );
                                                   },
@@ -275,8 +277,30 @@ class UserResponsive extends StatelessWidget {
                                                   color: Colors.green,
                                                   label: "تعديل",
                                                   onPressed: () {
-                                                    // TODO: فتح نافذة التعديل
-                                                  },
+                                                    showDialog(
+                                                      context: context,
+
+
+                                                      builder:
+                                                          (_) => UserDialog(
+                                                        isEdit: true,                                                        firstNameController:
+                                                        firstNameController,
+                                                        lastNameController:
+                                                        lastNameController,
+                                                        emailController: emailController,
+                                                        passwordController:
+                                                        passwordController,
+                                                        phoneController: phoneController,
+                                                        imageController: imageController,
+                                                        activityController:
+                                                        activityController,
+                                                        deviceTokenController:
+                                                        deviceTokenController,
+                                                        selectedRole: selectedRole,
+                                                        onRoleChanged:
+                                                            (role) => selectedRole = role,
+                                                      ),
+                                                    );                                                  },
                                                 ),
                                               ],
                                             ),

@@ -1,5 +1,4 @@
 import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
 import '../../../data/model/currency.dart';
 import '../../../data/repo/currency_repo.dart';
 part 'currency_state.dart';
