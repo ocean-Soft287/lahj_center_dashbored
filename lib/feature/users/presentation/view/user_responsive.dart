@@ -103,7 +103,9 @@ class UserResponsive extends StatelessWidget {
                                   showDialog(
                                     context: context,
                                     builder:
-                                        (_) => UserDialog(
+                                        (_) => BlocProvider(
+                                          create: (context) => GetIt.instance<UserCubit>(),
+  child: UserDialog(
                                           isEdit: false,
                                           firstNameController:
                                               firstNameController,
@@ -122,6 +124,7 @@ class UserResponsive extends StatelessWidget {
                                           onRoleChanged:
                                               (role) => selectedRole = role,
                                         ),
+),
                                   );
                                 },
                                 style: ElevatedButton.styleFrom(

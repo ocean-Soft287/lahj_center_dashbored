@@ -16,6 +16,7 @@ abstract class UserRepo{
       String phoneNumber,
       String? activity,
       String role,
-      File? imageFile
+      File? imageFile,
+  String? imageName,
       );
 }

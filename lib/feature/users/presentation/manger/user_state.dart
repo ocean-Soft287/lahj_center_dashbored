@@ -1,8 +1,6 @@
 part of 'user_cubit.dart';
 
 @immutable
-
-@immutable
 abstract class UserState {}
 
 class UserInitial extends UserState {}
@@ -17,6 +15,14 @@ class UserError extends UserState {
   final String message;
 
   UserError(this.message);
+}
+
+class AddUserSuccess extends UserState {}
+
+class AddUserError extends UserState {
+  final String message;
+
+  AddUserError(this.message);
 }
 
 class DeleteSuccess extends UserState {
