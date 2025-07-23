@@ -277,7 +277,7 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                                           governorateId:
                                               selectedGovernmentint ?? 0,
                                           area: '',
-                                          description: widget.description.text,
+                                          description: widget.description.text, X: [],
                                         );
                                   },
                                 );

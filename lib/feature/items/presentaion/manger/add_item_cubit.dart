@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:lahj_center/feature/items/data/repo/items_repo.dart';
 import 'package:meta/meta.dart';
@@ -21,6 +23,7 @@ class AddItemCubit extends Cubit<AddItemState> {
     required int governorateId,
     required String area,
     required String description,
+    required List<File>X
   }) async {
     emit(AddItemLoading());
 
@@ -34,6 +37,7 @@ class AddItemCubit extends Cubit<AddItemState> {
       governorateId,
       area,
       description,
+        X
     );
 
     result.fold(

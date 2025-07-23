@@ -1,4 +1,7 @@
+import 'dart:io';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
+import 'package:path/path.dart'; // for basename
 import 'package:lahj_center/core/utils/Failure/failure.dart';
 import 'package:lahj_center/core/utils/api/dio_consumer.dart';
 import 'package:lahj_center/core/utils/api/endpoint.dart';
@@ -22,8 +25,21 @@ class Itemsrepoimp implements ItemsRepo {
       int governorateid,
       String area,
       String description,
+      List<File> images,
       ) async {
-    final data = {
+    // Convert List<File> to List<MultipartFile>
+    List<MultipartFile> imageFiles = [];
+    for (var img in images) {
+      imageFiles.add(
+        await MultipartFile.fromFile(
+          img.path,
+          filename: basename(img.path),
+          // Optionally: contentType: MediaType('image', 'jpeg'), // needs http_parser
+        ),
+      );
+    }
+
+    FormData formData = FormData.fromMap({
       "Name": name,
       "Phone": phone,
       "GroupId": groupid,
@@ -33,14 +49,14 @@ class Itemsrepoimp implements ItemsRepo {
       "GovernorateId": governorateid,
       "Area": area,
       "Description": description,
-      "ImagesToAdd": [],
-    };
+      "ImagesToAdd": imageFiles, // List<MultipartFile>
+    });
 
     try {
       final response = await dioConsumer.post(
         EndPoint.addAdvertisement,
         isFromData: true,
-        data: data,
+        data: formData,
       );
 
       if (response is String && response == "Advertisement is already registered.") {

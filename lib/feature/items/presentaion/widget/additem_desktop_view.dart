@@ -269,8 +269,8 @@ class _Additem_DesktopViewState extends State<Additem_DesktopView> {
                                       price: int.parse(widget.price.text),
                                       currency: selectedCurrencyint ?? 0,
                                       governorateId: selectedGovernmentint ?? 0,
-                                      area: '', // or another controller if you have area
-                                      description: widget.description.text,
+                                      area: 'wqdadsdasdsadasdasd', // or another controller if you have area
+                                      description: widget.description.text, X: [],
                                     );
 
                                   },

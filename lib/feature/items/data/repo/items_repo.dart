@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dartz/dartz.dart';
 import 'package:lahj_center/core/utils/Failure/failure.dart';
 
@@ -14,6 +16,7 @@ abstract class ItemsRepo{
       int governorateid,
       String area,
       String description,
+     List<File>x,
       );
 
 // Future<Either<Failure,>>
