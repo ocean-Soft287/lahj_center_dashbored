@@ -2,7 +2,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-
 import '../../../../core/const/widget/custom_button.dart';
 import '../../../../core/const/widget/dropdownformcrud.dart';
 import '../../../../core/const/widget/textformcrud.dart';
@@ -55,7 +54,8 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
           create: (context) => GetIt.instance<ServicesCubit>()..getServices(),
         ),
         BlocProvider<GovernmentCubit>(
-          create: (context) => GetIt.instance<GovernmentCubit>()..getGovernments(),
+          create:
+              (context) => GetIt.instance<GovernmentCubit>()..getGovernments(),
         ),
         BlocProvider<CurrencyCubit>(
           create: (context) => GetIt.instance<CurrencyCubit>()..getCurrencies(),
@@ -63,13 +63,14 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
         BlocProvider<AddItemCubit>(
           create: (BuildContext context) => GetIt.instance<AddItemCubit>(),
         ),
-
       ],
       child: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.all(5.0),
           child: ConstrainedBox(
-            constraints: BoxConstraints(minHeight: 0.999 * MediaQuery.of(context).size.height),
+            constraints: BoxConstraints(
+              minHeight: 0.999 * MediaQuery.of(context).size.height,
+            ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -117,11 +118,23 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Textformcrud(controller: widget.name, name: 'اسم الإعلان', nameinfo: 'أدخل اسم الإعلان'),
+                      Textformcrud(
+                        controller: widget.name,
+                        name: 'اسم الإعلان',
+                        nameinfo: 'أدخل اسم الإعلان',
+                      ),
                       const SizedBox(height: 10),
-                      Textformcrud(controller: widget.phone, name: 'رقم الهاتف', nameinfo: 'أدخل رقم الهاتف'),
+                      Textformcrud(
+                        controller: widget.phone,
+                        name: 'رقم الهاتف',
+                        nameinfo: 'أدخل رقم الهاتف',
+                      ),
                       const SizedBox(height: 10),
-                      Textformcrud(controller: widget.price, name: 'السعر', nameinfo: 'أدخل السعر'),
+                      Textformcrud(
+                        controller: widget.price,
+                        name: 'السعر',
+                        nameinfo: 'أدخل السعر',
+                      ),
                       const SizedBox(height: 10),
                       BlocBuilder<GroupCubit, GroupState>(
                         builder: (context, state) {
@@ -134,7 +147,9 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                               onChanged: (val) {
                                 setState(() {
                                   selectedGroup = val;
-                                  final selected = state.groups.firstWhere((e) => e.arName == val);
+                                  final selected = state.groups.firstWhere(
+                                    (e) => e.arName == val,
+                                  );
                                   selectedGroupint = selected.id;
                                 });
                               },
@@ -150,12 +165,17 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                             return DropdownFormCrud(
                               name: 'المحافظة',
                               hint: 'اختر المحافظة',
-                              items: state.governments.map((e) => e.arName).toList(),
+                              items:
+                                  state.governments
+                                      .map((e) => e.arName)
+                                      .toList(),
                               value: selectedGovernment,
                               onChanged: (val) {
                                 setState(() {
                                   selectedGovernment = val;
-                                  final selected = state.governments.firstWhere((e) => e.arName == val);
+                                  final selected = state.governments.firstWhere(
+                                    (e) => e.arName == val,
+                                  );
                                   selectedGovernmentint = selected.id;
                                 });
                               },
@@ -172,12 +192,15 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                             return DropdownFormCrud(
                               name: 'الحالة',
                               hint: 'اختر الحالة',
-                              items: state.services.map((e) => e.arName).toList(),
+                              items:
+                                  state.services.map((e) => e.arName).toList(),
                               value: selectedStatus,
                               onChanged: (val) {
                                 setState(() {
                                   selectedStatus = val;
-                                  final selected = state.services.firstWhere((e) => e.arName == val);
+                                  final selected = state.services.firstWhere(
+                                    (e) => e.arName == val,
+                                  );
                                   selectedStatusint = selected.id;
                                 });
                               },
@@ -194,12 +217,17 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                             return DropdownFormCrud(
                               name: 'العملة',
                               hint: 'اختر العملة',
-                              items: state.currencies.map((e) => e.arName).toList(),
+                              items:
+                                  state.currencies
+                                      .map((e) => e.arName)
+                                      .toList(),
                               value: selectedCurrency,
                               onChanged: (val) {
                                 setState(() {
                                   selectedCurrency = val;
-                                  final selected = state.currencies.firstWhere((e) => e.arName == val);
+                                  final selected = state.currencies.firstWhere(
+                                    (e) => e.arName == val,
+                                  );
                                   selectedCurrencyint = selected.id;
                                 });
                               },
@@ -210,7 +238,11 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      Textformcrud(controller: widget.description, name: 'وصف الإعلان', nameinfo: 'أدخل وصف الإعلان'),
+                      Textformcrud(
+                        controller: widget.description,
+                        name: 'وصف الإعلان',
+                        nameinfo: 'أدخل وصف الإعلان',
+                      ),
                       const SizedBox(height: 10),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -231,17 +263,22 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                                     print(selectedGovernmentint);
                                     print(selectedStatusint);
 
-                                    context.read<AddItemCubit>().addAdvertisement(
-                                      name: widget.name.text,
-                                      phone: widget.phone.text,
-                                      groupId: selectedGroupint ?? 0,
-                                      serviceId: selectedStatusint ?? 0,
-                                      price: int.tryParse(widget.price.text) ?? 0,
-                                      currency: selectedCurrencyint ?? 0,
-                                      governorateId: selectedGovernmentint ?? 0,
-                                      area: '',
-                                      description: widget.description.text,
-                                    );
+                                    context
+                                        .read<AddItemCubit>()
+                                        .addAdvertisement(
+                                          name: widget.name.text,
+                                          phone: widget.phone.text,
+                                          groupId: selectedGroupint ?? 0,
+                                          serviceId: selectedStatusint ?? 0,
+                                          price:
+                                              int.tryParse(widget.price.text) ??
+                                              0,
+                                          currency: selectedCurrencyint ?? 0,
+                                          governorateId:
+                                              selectedGovernmentint ?? 0,
+                                          area: '',
+                                          description: widget.description.text,
+                                        );
                                   },
                                 );
                               },
