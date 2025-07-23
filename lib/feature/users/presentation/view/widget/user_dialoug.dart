@@ -1,9 +1,10 @@
-import 'dart:io' show File;
+import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 import '../../../../../core/utils/class_helper/imagepicker_class.dart';
 import '../../../../../core/utils/class_helper/validator_class.dart';
@@ -11,6 +12,7 @@ import '../../manger/user_cubit.dart';
 
 class UserDialog extends StatelessWidget {
   final bool isEdit;
+  final String? id; // ✅ Add id for edit mode
 
   final TextEditingController firstNameController;
   final TextEditingController lastNameController;
@@ -27,6 +29,7 @@ class UserDialog extends StatelessWidget {
   const UserDialog({
     super.key,
     required this.isEdit,
+    this.id, // ✅ Optional in edit mode
     required this.firstNameController,
     required this.lastNameController,
     required this.emailController,
@@ -44,7 +47,8 @@ class UserDialog extends StatelessWidget {
     final _formKey = GlobalKey<FormState>();
     final _roles = ['Admin', 'Member'];
 
-    final selectedImage = ValueNotifier<Object?>(null);
+    final ValueNotifier<XFile?> pickedXFile = ValueNotifier(null);
+    final ValueNotifier<Uint8List?> pickedBytes = ValueNotifier(null);
 
     return AlertDialog(
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -64,7 +68,8 @@ class UserDialog extends StatelessWidget {
                 _buildTextField(emailController, 'Email', true,
                     validator: FormValidators.email),
                 _buildTextField(passwordController, 'Password', !isEdit,
-                    obscure: true, validator: FormValidators.password),
+                    obscure: true,
+                    validator: !isEdit ? FormValidators.password : null),
                 _buildTextField(phoneController, 'Phone Number', true,
                     validator: FormValidators.phone),
                 _buildTextField(deviceTokenController, 'Device Token', true,
@@ -72,16 +77,18 @@ class UserDialog extends StatelessWidget {
                 _buildTextField(activityController, 'Activity', false),
                 const SizedBox(height: 10),
 
-                /// صورة
-                ValueListenableBuilder<Object?>(
-                  valueListenable: selectedImage,
-                  builder: (context, image, _) {
+                // Image Picker
+                ValueListenableBuilder2<XFile?, Uint8List?>(
+                  firstNotifier: pickedXFile,
+                  secondNotifier: pickedBytes,
+                  builder: (context, file, bytes, _) {
+                    final image = kIsWeb ? bytes : file;
                     return Row(
                       children: [
                         if (image != null)
-                          if (image is File)
+                          if (image is XFile)
                             Image.file(
-                              image,
+                              File(image.path),
                               width: 50,
                               height: 50,
                               fit: BoxFit.cover,
@@ -96,14 +103,16 @@ class UserDialog extends StatelessWidget {
                         const SizedBox(width: 8),
                         ElevatedButton.icon(
                           onPressed: () async {
-                            final pickedFile =
-                            await ImagePickerHelper.pickImage();
-                            if (pickedFile != null) {
-                              selectedImage.value = pickedFile;
-                              if (pickedFile is File) {
+                            final picked = await ImagePickerHelper.pickImage();
+                            if (picked != null) {
+                              if (picked is XFile) {
+                                pickedXFile.value = picked;
+                                pickedBytes.value = null;
                                 imageController.text =
-                                    pickedFile.path.split('/').last;
-                              } else if (pickedFile is Uint8List) {
+                                    picked.path.split('/').last;
+                              } else if (picked is Uint8List) {
+                                pickedBytes.value = picked;
+                                pickedXFile.value = null;
                                 imageController.text = 'web_selected_image';
                               }
                             }
@@ -118,7 +127,7 @@ class UserDialog extends StatelessWidget {
 
                 const SizedBox(height: 10),
 
-                /// الدور
+                // Role Dropdown
                 DropdownButtonFormField<String>(
                   value: selectedRole,
                   items: _roles
@@ -146,18 +155,32 @@ class UserDialog extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             if (_formKey.currentState!.validate()) {
-              context.read<UserCubit>().addUser(
-                firstName: firstNameController.text,
-                lastName: lastNameController.text,
-                email: emailController.text,
-                password: passwordController.text,
-                phoneNumber: phoneController.text,
-                activity: activityController.text,
-                role: selectedRole,
-                imageFile: selectedImage.value,
-                imageName: imageController.text,
-              );
-
+              if (!isEdit) {
+                context.read<UserCubit>().addUser(
+                  firstName: firstNameController.text,
+                  lastName: lastNameController.text,
+                  email: emailController.text,
+                  password: passwordController.text,
+                  phoneNumber: phoneController.text,
+                  activity: activityController.text,
+                  role: selectedRole,
+                  pickedXFile: pickedXFile.value,
+                  pickedBytes: pickedBytes.value,
+                );
+              } else {
+                context.read<UserCubit>().updateUser(
+                  id: id!, // ✅ make sure caller passes id
+                  firstName: firstNameController.text,
+                  lastName: lastNameController.text,
+                  email: emailController.text,
+                  password: passwordController.text,
+                  phoneNumber: phoneController.text,
+                  activity: activityController.text,
+                  role: selectedRole,
+                  pickedXFile: pickedXFile.value,
+                  pickedBytes: pickedBytes.value,
+                );
+              }
               Navigator.pop(context);
             }
           },
@@ -185,6 +208,34 @@ class UserDialog extends StatelessWidget {
           border: const OutlineInputBorder(),
         ),
       ),
+    );
+  }
+}
+
+class ValueListenableBuilder2<A, B> extends StatelessWidget {
+  final ValueListenable<A> firstNotifier;
+  final ValueListenable<B> secondNotifier;
+  final Widget Function(BuildContext, A, B, Widget?) builder;
+
+  const ValueListenableBuilder2({
+    super.key,
+    required this.firstNotifier,
+    required this.secondNotifier,
+    required this.builder,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ValueListenableBuilder<A>(
+      valueListenable: firstNotifier,
+      builder: (context, a, _) {
+        return ValueListenableBuilder<B>(
+          valueListenable: secondNotifier,
+          builder: (context, b, child) {
+            return builder(context, a, b, child);
+          },
+        );
+      },
     );
   }
 }

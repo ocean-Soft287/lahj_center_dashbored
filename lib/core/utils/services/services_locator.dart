@@ -17,11 +17,13 @@ import 'package:lahj_center/feature/report/presentation/manger/report_cubit.dart
 import 'package:lahj_center/feature/users/data/userrepo/user_repo.dart';
 import 'package:lahj_center/feature/users/data/userrepo/user_repo_imp.dart';
 import 'package:lahj_center/feature/users/presentation/manger/user_cubit.dart';
-
 import '../../../feature/Auth/data/repo/repo.dart';
 import '../../../feature/Auth/data/repo/repoimp.dart';
 import '../../../feature/Auth/presentation/cubit/auth_cubit.dart';
 import '../../../feature/addcurrencyandcategory/data/repo/currency_repo.dart';
+import '../../../feature/mange_orders/Data/data/data_number_repo.dart';
+import '../../../feature/mange_orders/Data/data/data_number_repo_imp.dart';
+import '../../../feature/mange_orders/screen/manger/datagroupdata_cubit.dart';
 import '../api/api_consumer.dart';
 import '../api/dio_consumer.dart';
 import '../api/endpoint.dart';
@@ -72,4 +74,11 @@ void setup() {
   ///reportcomment
   sl.registerLazySingleton<Reportrepo>(() => Reportrepoimp(dioConsumer: sl<DioConsumer>()));
   sl.registerFactory<ReportCubit>(() => ReportCubit(sl<Reportrepo>()));
+  
+  ///Datanumberrepo
+  sl.registerLazySingleton<Datanumberrepo>(()=>Datanumberrepoimp(dioConsumer:  sl<DioConsumer>()));
+  sl.registerFactory<DatagroupdataCubit>(() => DatagroupdataCubit(sl<Datanumberrepo>()));
+
+
+
 }

@@ -12,7 +12,9 @@ class EndPoint {
   static String adminadd="$baseUrl/Member/adminAddMember";
   static String adminupdate="$baseUrl/Member/adminUpdateMember";
 static String deactivateanddelete="$baseUrl/Member/DeactivateDeleteRelated";   ///deactiveat member related operations
+
   // Advertisement
+  static String getAdvertGroupsTotal="$baseUrl/Advertisement/GetAdvertGroupsTotal";
   static String getAllAdvertisements = "$baseUrl/Advertisement/GetAll";
   static String getApprovedAdvertisements = "$baseUrl/Advertisement/GetApproved";
   static String getAdvertisementById = "$baseUrl/Advertisement/By-Id/{Id}";

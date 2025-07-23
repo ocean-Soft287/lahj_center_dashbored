@@ -1,13 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:get_it/get_it.dart';
+import 'package:lahj_center/feature/mange_orders/screen/widget/order_list.dart';
+
 import '../../../core/utils/font/fonts.dart';
-import '../Data/model/order.dart';
+import '../Data/model/data_of_category.dart';
+import '../screen/manger/datagroupdata_cubit.dart';
 
 class ResponsiveManageOrder extends StatefulWidget {
   const ResponsiveManageOrder({super.key});
 
   @override
-  _ResponsiveManageOrderState createState() => _ResponsiveManageOrderState();
+  State<ResponsiveManageOrder> createState() => _ResponsiveManageOrderState();
 }
 
 class _ResponsiveManageOrderState extends State<ResponsiveManageOrder> {
@@ -15,40 +20,56 @@ class _ResponsiveManageOrderState extends State<ResponsiveManageOrder> {
   DateTime? lastTapTime;
   bool showTopProducts = false;
 
-  List<Order> orders = [
-    Order(name: "الكل", price: 12870, percent: -2.5),
-    Order(name: "سيارات", price: 12870, percent: -2.2),
-    Order(name: "عقارات", price: 12870, percent: -2.5),
-    Order(name: "ملابس", price: 12870, percent: -2.5),
-    Order(name: "الجوال-انترنت", price: 12870, percent: 1.8),
-    Order(name: "الأجهزة الإلكترونية", price: 12870, percent: 0.9),
-  ];
-
   double getCardAspectRatio(double width) {
     if (width >= 1200) return 3.5;
     if (width >= 800) return 2.8;
     return 4;
   }
 
+  void handleOrderTap(int index) {
+    final now = DateTime.now();
+    if (selectedOrderIndex == index &&
+        lastTapTime != null &&
+        now.difference(lastTapTime!) < const Duration(milliseconds: 400)) {
+      setState(() {
+        showTopProducts = true;
+      });
+    } else {
+      setState(() {
+        selectedOrderIndex = index;
+        showTopProducts = false;
+        lastTapTime = now;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        return SingleChildScrollView(
-          child: Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                _buildOrdersList(
-                  crossAxisCount: constraints.maxWidth < 800 ? 1 : 3,
-                  aspect: getCardAspectRatio(constraints.maxWidth),
-                ),
-                const SizedBox(height: 30),
-                _buildChartHeader(),
-                const SizedBox(height: 12),
-                showTopProducts ? _buildTopProductsTable() : _buildLineChart(),
-              ],
+        return BlocProvider(
+          create:
+              (context) =>
+                  GetIt.instance<DatagroupdataCubit>()..getDataNumber(),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  BuildOrdersList(
+                    crossAxisCount: constraints.maxWidth < 800 ? 1 : 3,
+                    aspect: getCardAspectRatio(constraints.maxWidth),
+                    onOrderTap: handleOrderTap,
+                  ),
+                  const SizedBox(height: 30),
+                  _buildChartHeader(),
+                  const SizedBox(height: 12),
+                  showTopProducts
+                      ? _buildTopProductsTable()
+                      : _buildLineChart(),
+                ],
+              ),
             ),
           ),
         );
@@ -62,7 +83,7 @@ class _ResponsiveManageOrderState extends State<ResponsiveManageOrder> {
       children: [
         Text(
           '\$11.642',
-          style: TextStyle(
+          style: const TextStyle(
             fontSize: 24,
             fontWeight: FontWeight.bold,
             fontFamily: Fonts.cairo,
@@ -105,13 +126,17 @@ class _ResponsiveManageOrderState extends State<ResponsiveManageOrder> {
               sideTitles: SideTitles(
                 showTitles: true,
                 reservedSize: 42,
-                getTitlesWidget: (value, _) => Padding(
-                  padding: const EdgeInsets.only(right: 8.0),
-                  child: Text(
-                    '\$${value.toInt()}k',
-                    style: TextStyle(fontSize: 12, fontFamily: Fonts.cairo),
-                  ),
-                ),
+                getTitlesWidget:
+                    (value, _) => Padding(
+                      padding: const EdgeInsets.only(right: 8.0),
+                      child: Text(
+                        '\$${value.toInt()}k',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontFamily: Fonts.cairo,
+                        ),
+                      ),
+                    ),
                 interval: 20,
               ),
             ),
@@ -284,105 +309,5 @@ class _ResponsiveManageOrderState extends State<ResponsiveManageOrder> {
       ],
     );
   }
-
-  Widget _buildOrdersList({required int crossAxisCount, required double aspect}) {
-    final cardColors = [
-      Colors.blue.shade100,
-      Colors.cyan.shade100,
-      Colors.grey.shade300,
-      Colors.pink.shade100,
-      Colors.purple.shade100,
-      Colors.green.shade100,
-    ];
-
-    return GridView.builder(
-      shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(),
-      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-        crossAxisCount: crossAxisCount,
-        childAspectRatio: aspect,
-        crossAxisSpacing: 16,
-        mainAxisSpacing: 16,
-      ),
-      itemCount: orders.length,
-      itemBuilder: (context, index) {
-        final order = orders[index];
-        final color = cardColors[index % cardColors.length];
-
-        return GestureDetector(
-          onTap: () {
-            final now = DateTime.now();
-            if (selectedOrderIndex == index &&
-                lastTapTime != null &&
-                now.difference(lastTapTime!) < Duration(milliseconds: 400)) {
-              setState(() {
-                showTopProducts = true;
-              });
-            } else {
-              setState(() {
-                selectedOrderIndex = index;
-                showTopProducts = false;
-                lastTapTime = now;
-              });
-            }
-          },
-          child: Container(
-            decoration: BoxDecoration(
-              color: color,
-              borderRadius: BorderRadius.circular(16),
-              boxShadow: const [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 8,
-                  offset: Offset(0, 4),
-                ),
-              ],
-            ),
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    order.name,
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w600,
-                      fontFamily: Fonts.cairo,
-                      color: Colors.grey[700],
-                    ),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      '${order.percent > 0 ? '+' : ''}${order.percent.toStringAsFixed(1)}%',
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: Fonts.cairo,
-                        color: order.percent < 0 ? Colors.red[400] : Colors.green[700],
-                      ),
-                    ),
-                    Text(
-                      "\$${order.price.toStringAsFixed(2)}k",
-                      style: TextStyle(
-                        fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: Fonts.cairo,
-                        color: Colors.black,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-          ),
-        );
-      },
-    );
-  }
 }
+

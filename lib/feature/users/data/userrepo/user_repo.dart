@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:dartz/dartz.dart';
+import 'package:dio/dio.dart';
 import '../../../../core/utils/Failure/failure.dart';
 import '../model/succesresponde.dart';
 import '../model/user_model.dart';
@@ -16,7 +17,19 @@ abstract class UserRepo{
       String phoneNumber,
       String? activity,
       String role,
-      File? imageFile,
-  String? imageName,
+      MultipartFile? imageFile,
+      );
+  Future<Either<Failure, ResponseMessage>> updatemember(
+      String id ,
+
+      String firstName,
+      String lastName,
+      String email,
+      String phoneNumber,
+      String password,
+      MultipartFile? imageFile,
+      String role,
+
+      String? activity,
       );
 }

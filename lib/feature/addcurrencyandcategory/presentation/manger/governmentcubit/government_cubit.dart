@@ -73,6 +73,6 @@ class GovernmentCubit extends Cubit<GovernmentState> {
   }
 
   String _mapFailureToMessage(Failure failure) {
-    return failure.message ?? "حدث خطأ غير متوقع";
+    return failure.message ;
   }
 }

@@ -36,3 +36,5 @@ class DeleteUserError extends UserState {
 
   DeleteUserError([this.message = 'Failed to delete user.']);
 }
+
+class UpdateUserSuccess extends UserState {}

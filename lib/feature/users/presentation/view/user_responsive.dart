@@ -286,7 +286,9 @@ class UserResponsive extends StatelessWidget {
 
                                                       builder:
                                                           (_) => UserDialog(
-                                                        isEdit: true,                                                        firstNameController:
+                                                        isEdit: true,
+                                                        id:user.id,
+                                                        firstNameController:
                                                         firstNameController,
                                                         lastNameController:
                                                         lastNameController,

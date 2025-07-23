@@ -1,12 +1,17 @@
-
+import 'dart:typed_data';
 import 'package:bloc/bloc.dart';
 import 'package:dartz/dartz.dart';
-import 'package:meta/meta.dart';
-
-import 'package:lahj_center/feature/users/data/model/succesresponde.dart';
+import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:lahj_center/feature/users/data/model/user_model.dart';
 import 'package:lahj_center/feature/users/data/userrepo/user_repo.dart';
 import 'package:lahj_center/core/utils/Failure/failure.dart';
+import 'package:meta/meta.dart';
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart' as path;
+
+import '../../../../../feature/users/data/model/succesresponde.dart';
 
 part 'user_state.dart';
 
@@ -17,9 +22,7 @@ class UserCubit extends Cubit<UserState> {
 
   List<User> users = [];
 
-  /// Fetch all users
-  Future<void> getUsers() async {
-    emit(UserInitial());
+  void getUsers() async {
     final Either<Failure, List<User>> response = await userRepo.getuser();
 
     response.fold(
@@ -31,34 +34,31 @@ class UserCubit extends Cubit<UserState> {
     );
   }
 
-  /// Delete user and refresh list
-  Future<void> delete(String id) async {
-    final Either<Failure, String> response = await userRepo.deleteuserandallinformation(id);
-
+  void delete(String id) async {
+    final Either<Failure, String> response =
+    await userRepo.deleteuserandallinformation(id);
     response.fold(
           (failure) => emit(DeleteUserError()),
-          (data) {
+          (_) {
         emit(DeleteSuccess());
         getUsers();
       },
     );
   }
 
-  /// Block user and refresh list
-  Future<void> block(String id) async {
-    final Either<Failure, String> response = await userRepo.deleteandblock(id);
-
+  void block(String id) async {
+    final Either<Failure, String> response =
+    await userRepo.deleteandblock(id);
     response.fold(
           (failure) => emit(DeleteUserError()),
-          (data) {
+          (_) {
         emit(DeleteSuccess());
         getUsers();
       },
     );
   }
 
-  /// Add new user and refresh list
-  Future<void> addUser({
+  void addUser({
     required String firstName,
     required String lastName,
     required String email,
@@ -66,9 +66,24 @@ class UserCubit extends Cubit<UserState> {
     required String phoneNumber,
     String? activity,
     required String role,
-    dynamic imageFile,
-    String? imageName,
+    XFile? pickedXFile,
+    Uint8List? pickedBytes,
   }) async {
+    MultipartFile? imagePart;
+
+    if (kIsWeb && pickedBytes != null) {
+      imagePart = MultipartFile.fromBytes(
+        pickedBytes,
+        filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.png',
+        contentType: MediaType('image', 'png'),
+      );
+    } else if (!kIsWeb && pickedXFile != null) {
+      imagePart = await MultipartFile.fromFile(
+        pickedXFile.path,
+        filename: path.basename(pickedXFile.path),
+      );
+    }
+
     final Either<Failure, ResponseMessage> response = await userRepo.addmember(
       firstName,
       lastName,
@@ -77,18 +92,71 @@ class UserCubit extends Cubit<UserState> {
       phoneNumber,
       activity,
       role,
-      imageFile,
-      imageName,
+      imagePart,
     );
 
     response.fold(
-          (failure) => emit(AddUserError(_mapFailureToMessage(failure))),
+          (failure) => emit(UserError(_mapFailureToMessage(failure))),
           (_) {
-        emit(AddUserSuccess());
         getUsers();
+        emit(AddUserSuccess());
       },
     );
   }
 
-  String _mapFailureToMessage(Failure failure) => failure.message;
+  void updateUser({
+    required String id,
+    required String firstName,
+    required String lastName,
+    required String email,
+    required String password,
+    required String phoneNumber,
+    String? activity,
+    required String role,
+    XFile? pickedXFile,
+    Uint8List? pickedBytes,
+  }) async {
+    MultipartFile? imagePart;
+
+    if (kIsWeb && pickedBytes != null) {
+      imagePart = MultipartFile.fromBytes(
+        pickedBytes,
+        filename: 'profile_${DateTime.now().millisecondsSinceEpoch}.png',
+        contentType: MediaType('image', 'png'),
+      );
+    } else if (!kIsWeb && pickedXFile != null) {
+      imagePart = await MultipartFile.fromFile(
+        pickedXFile.path,
+        filename: path.basename(pickedXFile.path),
+      );
+    }
+
+    final Either<Failure, ResponseMessage> response =
+    await userRepo.updatemember(
+      id,
+      firstName,
+      lastName,
+      email,
+      phoneNumber,
+      password,
+      imagePart,
+      role,
+      activity,
+    );
+
+    response.fold(
+          (failure) => emit(UserError(_mapFailureToMessage(failure))),
+          (_) {
+        getUsers();
+        emit(UpdateUserSuccess());
+      },
+    );
+  }
+
+
+
+
+  String _mapFailureToMessage(Failure failure) {
+    return failure.message;
+  }
 }
