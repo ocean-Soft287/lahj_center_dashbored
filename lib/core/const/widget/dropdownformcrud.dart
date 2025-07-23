@@ -5,7 +5,7 @@ import '../../utils/font/fonts.dart';
 class DropdownFormCrud extends StatelessWidget {
   final String name;
   final String hint;
-  final List<String> items;
+  final List<dynamic> items;
   final String? value;
   final void Function(String?)? onChanged;
   final String? Function(String?)? validator;

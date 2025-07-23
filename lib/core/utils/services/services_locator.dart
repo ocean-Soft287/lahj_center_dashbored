@@ -11,6 +11,8 @@ import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/c
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/governmentcubit/government_cubit.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/group_cubit/group_cubit.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/services_cubit/services_cubit.dart';
+import 'package:lahj_center/feature/items/data/repo/items_repoimp.dart';
+import 'package:lahj_center/feature/items/presentaion/manger/add_item_cubit.dart';
 import 'package:lahj_center/feature/report/data/report_repo/report_repo.dart';
 import 'package:lahj_center/feature/report/data/report_repo/report_repo_imp.dart';
 import 'package:lahj_center/feature/report/presentation/manger/report_cubit.dart';
@@ -21,6 +23,7 @@ import '../../../feature/Auth/data/repo/repo.dart';
 import '../../../feature/Auth/data/repo/repoimp.dart';
 import '../../../feature/Auth/presentation/cubit/auth_cubit.dart';
 import '../../../feature/addcurrencyandcategory/data/repo/currency_repo.dart';
+import '../../../feature/items/data/repo/items_repo.dart';
 import '../../../feature/mange_orders/Data/data/data_number_repo.dart';
 import '../../../feature/mange_orders/Data/data/data_number_repo_imp.dart';
 import '../../../feature/mange_orders/screen/manger/datagroupdata_cubit.dart';
@@ -78,7 +81,7 @@ void setup() {
   ///Datanumberrepo
   sl.registerLazySingleton<Datanumberrepo>(()=>Datanumberrepoimp(dioConsumer:  sl<DioConsumer>()));
   sl.registerFactory<DatagroupdataCubit>(() => DatagroupdataCubit(sl<Datanumberrepo>()));
-
-
-
+///add item
+  sl.registerLazySingleton<ItemsRepo>(() => Itemsrepoimp(dioConsumer: sl<DioConsumer>()));
+  sl.registerFactory<AddItemCubit>(() => AddItemCubit(itemsRepo: sl<ItemsRepo>()));
 }

@@ -1,25 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/blocObserver.dart';
 import 'core/utils/font/fonts.dart';
 import 'core/utils/route/approutes.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'core/utils/services/services_locator.dart';
 import 'feature/barnavigation/cubitbar/bar_cubit.dart';
 
-
 void main() {
-  setup();
-  Bloc.observer = MyBlocObserver();
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(    BlocProvider(
-    create: (_) => BarCubit(),
+  setup();
 
-    child: MyApp(),
-  ));
+  Bloc.observer = MyBlocObserver();
 
+  runApp(
+    MultiBlocProvider(
+      providers: [
 
+        BlocProvider<BarCubit>(
+          create: (context) => BarCubit(),
+        ),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -28,10 +33,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      theme: ThemeData(fontFamily: Fonts.cairo),
-
       debugShowCheckedModeBanner: false,
       title: 'تطبيق Flutter',
+      theme: ThemeData(
+        fontFamily: Fonts.cairo,
+      ),
       locale: const Locale('ar'),
       supportedLocales: const [
         Locale('en', ''),

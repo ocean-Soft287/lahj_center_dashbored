@@ -63,11 +63,11 @@ class _ResponsiveManageOrderState extends State<ResponsiveManageOrder> {
                     onOrderTap: handleOrderTap,
                   ),
                   const SizedBox(height: 30),
-                  _buildChartHeader(),
+                  // _buildChartHeader(),
                   const SizedBox(height: 12),
-                  showTopProducts
-                      ? _buildTopProductsTable()
-                      : _buildLineChart(),
+                  // showTopProducts
+                  //     ? _buildTopProductsTable()
+                  //     : _buildLineChart(),
                 ],
               ),
             ),
