@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/services_cubit/services_cubit.dart';
 import '../../../../../core/const/widget/custom_button.dart';
 import '../../../../../core/const/widget/textformcrud.dart';
+import '../../../../../core/utils/class_helper/validator_class.dart';
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
 import '../../../../barnavigation/cubitbar/bar_cubit.dart';
@@ -83,16 +84,31 @@ class AddServicePhone extends StatelessWidget {
                       controller: service,
                       name: 'اسم الخدمة بالعربي *',
                       nameinfo: 'أدخل اسم الخدمة بالعربي',
+                      validator: FormValidators.arabicOnly,
+
                     ),
                     const SizedBox(height: 12),
                     Textformcrud(
                       controller: serviceEnglish,
                       name: 'اسم الخدمة بالإنجليزية *',
                       nameinfo: 'أدخل اسم الخدمة بالإنجليزية',
+                      validator: FormValidators.englishOnly,
+
                     ),
                     const SizedBox(height: 20),
                     BlocConsumer<ServicesCubit, ServicesState>(
-                      listener: (context, state) {},
+                      listener: (context, state) {
+                        if(state is ServiceAdded){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('تم إضافة الخدمه بنجاح'),
+                              backgroundColor: Colors.green,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }
+
+                      },
                       builder: (context, state) {
                         return Row(
                           children: [

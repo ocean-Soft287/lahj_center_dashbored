@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/governmentcubit/government_cubit.dart';
 import '../../../../../core/const/widget/custom_button.dart';
 import '../../../../../core/const/widget/textformcrud.dart';
+import '../../../../../core/utils/class_helper/validator_class.dart';
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
 import '../../../../barnavigation/cubitbar/bar_cubit.dart';
@@ -91,20 +93,30 @@ class AddGovernmentPhone extends StatelessWidget {
                       controller: government,
                       name: 'اسم المحافظة بالعربي *',
                       nameinfo: 'أدخل اسم المحافظة بالعربي',
+                      validator: FormValidators.arabicOnly, // ✅
                     ),
                     const SizedBox(height: 12),
                     Textformcrud(
                       controller: governmentenglish,
                       name: 'اسم المحافظة بالإنجليزية *',
                       nameinfo: 'أدخل اسم المحافظة بالإنجليزية',
+                      validator: FormValidators.englishOnly, // ✅
+
                     ),
                     const SizedBox(height: 20),
 
                     // ====== الأزرار ======
-                    BlocConsumer<CurrencyCubit, CurrencyState>(
+                    BlocConsumer<GovernmentCubit, GovernmentState>(
                       listener: (context, state) {
-                        // يمكنك إضافة إشعار نجاح/فشل هنا
-                      },
+                        if(state is GovernmentAdded){
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text('تم إضافة المحافظه بنجاح'),
+                              backgroundColor: Colors.green,
+                              duration: Duration(seconds: 2),
+                            ),
+                          );
+                        }                      },
                       builder: (context, state) {
                         return Row(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -113,7 +125,7 @@ class AddGovernmentPhone extends StatelessWidget {
                               child: CustomButton(
                                 name: 'إضافة',
                                 onTap: () {
-                                  context.read<CurrencyCubit>().addCurrency(
+                                  context.read<GovernmentCubit>().addGovernment(
                                     government.text,
                                     governmentenglish.text,
                                   );

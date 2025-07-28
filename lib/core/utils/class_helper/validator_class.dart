@@ -37,4 +37,22 @@ class FormValidators {
     }
     return null;
   }
+  static String? arabicOnly(String? value, {String message = 'يرجى إدخال النص باللغة العربية فقط'}) {
+    if (value == null || value.trim().isEmpty) return 'هذا الحقل مطلوب';
+    final arabicRegex = RegExp(r'^[\u0600-\u06FF\s]+$');
+    if (!arabicRegex.hasMatch(value.trim())) {
+      return message;
+    }
+    return null;
+  }
+
+  /// ✅ تحقق إن النص إنجليزي فقط
+  static String? englishOnly(String? value, {String message = 'Please enter English letters only'}) {
+    if (value == null || value.trim().isEmpty) return 'This field is required';
+    final englishRegex = RegExp(r'^[a-zA-Z\s]+$');
+    if (!englishRegex.hasMatch(value.trim())) {
+      return message;
+    }
+    return null;
+  }
 }
