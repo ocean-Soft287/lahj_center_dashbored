@@ -28,8 +28,8 @@ class AppRouter {
       case Routes.home:
         return MaterialPageRoute(builder: (_) => const CustomColumnSlider());
 
-      case Routes.edititem:
-        return MaterialPageRoute(builder: (_) => const EditItem());
+      // case Routes.edititem:
+      //   return MaterialPageRoute(builder: (_) => const EditItem());
 
       default:
         return MaterialPageRoute(builder: (_) => const ResponsiveLogin());

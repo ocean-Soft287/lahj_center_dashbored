@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../utils/font/fonts.dart';
 class MenuItem extends StatelessWidget {
   final String title;
   final String icon;

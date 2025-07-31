@@ -15,7 +15,7 @@ class Itemsrepoimp implements ItemsRepo {
   Itemsrepoimp({required this.dioConsumer});
 
   @override
-  Future<Either<Failure, Advertisement>> addadvertisminte(
+  Future<Either<Failure, Item>> addadvertisminte(
       String name,
       String phone,
       int groupid,
@@ -64,7 +64,7 @@ class Itemsrepoimp implements ItemsRepo {
       }
 
       if (response is Map<String, dynamic>) {
-        final model = Advertisement.fromJson(response);
+        final model = Item.fromJson(response);
         return right(model);
       } else {
         return left(ServerFailure("Unexpected response from server"));
@@ -73,4 +73,62 @@ class Itemsrepoimp implements ItemsRepo {
       return left(ServerFailure(e.toString()));
     }
   }
+
+  @override
+  Future<Either<Failure, List<Item>>> getalladvertisminte() async {
+    try {
+      final response = await dioConsumer.get(EndPoint.getAllAdvertisements);
+      final List<Item> advertisminte = (response as List)
+          .map((e) => Item.fromJson(e))
+          .toList();
+      return Right(advertisminte);
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
+
+  @override
+  Future<Either<Failure, String>> approval(int x) async{
+    try {
+      final response = await dioConsumer.put(
+        EndPoint.approvalAdvertisement(x),
+      );
+
+      if (response == "Advertisement Approved Successfully") {
+        return Right(response);
+      } else {
+        return Left(ServerFailure(response));
+      }
+    } catch (e) {
+      return Left(ServerFailure('خطأ أثناء الحظر والحذف: ${e.toString()}'));
+    }
+  }
+
+  @override
+  Future<Either<Failure,String>> deletemyadd(int id,String reason) async{
+    try {
+      Map<String, dynamic>addandreason={
+
+        "id": id,
+        "deletionReason": reason
+
+      };
+      final response = await dioConsumer.put(
+          EndPoint.deleteAdvertisement,
+          data: addandreason
+      );
+
+      if (response != null && response.toString()=="Advertisement Deleted Successfully") {
+
+        return Right(response);
+      } else {
+        return const Left(ServerFailure('Empty or null response from server'));
+      }
+    } catch (e) {
+      return Left(ServerFailure('Failed to fetch favourites: ${e.toString()}'));
+    }
+  }
+
+
+
 }

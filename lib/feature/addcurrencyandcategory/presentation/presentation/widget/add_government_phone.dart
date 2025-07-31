@@ -7,7 +7,6 @@ import '../../../../../core/utils/class_helper/validator_class.dart';
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
 import '../../../../barnavigation/cubitbar/bar_cubit.dart';
-import '../../manger/currency_cubit/currency_cubit.dart';
 
 
 class AddGovernmentPhone extends StatelessWidget {

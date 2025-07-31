@@ -12,7 +12,7 @@ import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/g
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/group_cubit/group_cubit.dart';
 import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/services_cubit/services_cubit.dart';
 import 'package:lahj_center/feature/items/data/repo/items_repoimp.dart';
-import 'package:lahj_center/feature/items/presentaion/manger/add_item_cubit.dart';
+import 'package:lahj_center/feature/items/presentaion/manger/item_cubit.dart';
 import 'package:lahj_center/feature/report/data/report_repo/report_repo.dart';
 import 'package:lahj_center/feature/report/data/report_repo/report_repo_imp.dart';
 import 'package:lahj_center/feature/report/presentation/manger/report_cubit.dart';
@@ -83,5 +83,5 @@ void setup() {
   sl.registerFactory<DatagroupdataCubit>(() => DatagroupdataCubit(sl<Datanumberrepo>()));
 ///add item
   sl.registerLazySingleton<ItemsRepo>(() => Itemsrepoimp(dioConsumer: sl<DioConsumer>()));
-  sl.registerFactory<AddItemCubit>(() => AddItemCubit(itemsRepo: sl<ItemsRepo>()));
+  sl.registerFactory<ItemCubit>(() => ItemCubit(itemsRepo: sl<ItemsRepo>()));
 }

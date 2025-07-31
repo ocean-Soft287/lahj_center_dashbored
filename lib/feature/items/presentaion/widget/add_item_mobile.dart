@@ -11,7 +11,7 @@ import '../../../addcurrencyandcategory/presentation/manger/currency_cubit/curre
 import '../../../addcurrencyandcategory/presentation/manger/governmentcubit/government_cubit.dart';
 import '../../../addcurrencyandcategory/presentation/manger/group_cubit/group_cubit.dart';
 import '../../../addcurrencyandcategory/presentation/manger/services_cubit/services_cubit.dart';
-import '../../../items/presentaion/manger/add_item_cubit.dart';
+import '../../../items/presentaion/manger/item_cubit.dart';
 
 class Additemmobileview extends StatefulWidget {
   final TextEditingController name;
@@ -60,8 +60,8 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
         BlocProvider<CurrencyCubit>(
           create: (context) => GetIt.instance<CurrencyCubit>()..getCurrencies(),
         ),
-        BlocProvider<AddItemCubit>(
-          create: (BuildContext context) => GetIt.instance<AddItemCubit>(),
+        BlocProvider<ItemCubit>(
+          create: (BuildContext context) => GetIt.instance<ItemCubit>(),
         ),
       ],
       child: SingleChildScrollView(
@@ -250,7 +250,7 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                           const Expanded(flex: 1, child: SizedBox()),
                           Expanded(
                             flex: 3,
-                            child: BlocConsumer<AddItemCubit, AddItemState>(
+                            child: BlocConsumer<ItemCubit, ItemState>(
                               listener: (context, state) {
                                 // إضافة أي feedback عند الإرسال
                               },
@@ -264,7 +264,7 @@ class _AdditemmobileviewState extends State<Additemmobileview> {
                                     print(selectedStatusint);
 
                                     context
-                                        .read<AddItemCubit>()
+                                        .read<ItemCubit>()
                                         .addAdvertisement(
                                           name: widget.name.text,
                                           phone: widget.phone.text,

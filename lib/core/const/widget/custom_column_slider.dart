@@ -94,12 +94,12 @@ class CustomColumnSlider extends StatelessWidget {
               isSelected: cubit.selectedIndex == 0,
               onTap: () => cubit.changePage(0),
             ),
-            MenuItem(
-              title: "اضافه اعلان",
-              icon: Images.additem,
-              isSelected: cubit.selectedIndex == 1,
-              onTap: () => cubit.changePage(1),
-            ),
+            // MenuItem(
+            //   title: "اضافه اعلان",
+            //   icon: Images.additem,
+            //   isSelected: cubit.selectedIndex == 1,
+            //   onTap: () => cubit.changePage(1),
+            // ),
             MenuItem(
               title: "الاعلانات",
               icon: Images.shoppingbag,

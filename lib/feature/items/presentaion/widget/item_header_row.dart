@@ -15,7 +15,7 @@ class ItemHeaderRow extends StatelessWidget {
           TableHeader(text: 'الوصف'),
           TableHeader(text: 'الصنف'),
           TableHeader(text: 'الصورة'),
-          TableHeader(text: 'رقم الجوال'),
+          // TableHeader(text: 'رقم الجوال'),
           TableHeader(text: 'الحالة'),
           TableHeader(text: ''),
         ],

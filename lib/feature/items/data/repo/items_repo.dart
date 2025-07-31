@@ -6,7 +6,7 @@ import 'package:lahj_center/core/utils/Failure/failure.dart';
 import '../model/advertisminte.dart';
 
 abstract class ItemsRepo{
-  Future<Either<Failure,Advertisement>>addadvertisminte(
+  Future<Either<Failure,Item>>addadvertisminte(
       String name,
       String phone,
       int groupid,
@@ -19,6 +19,9 @@ abstract class ItemsRepo{
      List<File>x,
       );
 
-// Future<Either<Failure,>>
+Future<Either<Failure,List<Item>>>getalladvertisminte();
+
+Future<Either<Failure,String>>approval(int x);
+  Future<Either<Failure, String>> deletemyadd(int id,String reason);
 
 }

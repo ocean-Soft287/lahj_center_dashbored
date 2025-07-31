@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lahj_center/feature/items/presentaion/manger/add_item_cubit.dart';
+import 'package:lahj_center/feature/items/presentaion/manger/item_cubit.dart';
 import '../../../../core/const/widget/custom_button.dart';
 import '../../../../core/const/widget/dropdownformcrud.dart';
 import '../../../../core/const/widget/textformcrud.dart';
@@ -65,8 +65,8 @@ class _Additem_DesktopViewState extends State<Additem_DesktopView> {
               (BuildContext context) =>
           GetIt.instance<CurrencyCubit>()..getCurrencies(),
         ),
-        BlocProvider<AddItemCubit>(
-          create: (BuildContext context) => GetIt.instance<AddItemCubit>(),
+        BlocProvider<ItemCubit>(
+          create: (BuildContext context) => GetIt.instance<ItemCubit>(),
         ),
       ],
       child: SingleChildScrollView(
@@ -252,7 +252,7 @@ class _Additem_DesktopViewState extends State<Additem_DesktopView> {
                           const Expanded(flex: 1, child: SizedBox()),
                           Expanded(
                             flex: 3,
-                            child: BlocConsumer<AddItemCubit, AddItemState>(
+                            child: BlocConsumer<ItemCubit, ItemState>(
                               listener: (context, state) {
                                 // TODO: implement listener
                               },
@@ -261,7 +261,7 @@ class _Additem_DesktopViewState extends State<Additem_DesktopView> {
                                   name: 'إرسال',
                                   onTap: () {
 
-                                    context.read<AddItemCubit>().addAdvertisement(
+                                    context.read<ItemCubit>().addAdvertisement(
                                       name: widget.name.text,
                                       phone: widget.phone.text,
                                       groupId: selectedGroupint ?? 0,

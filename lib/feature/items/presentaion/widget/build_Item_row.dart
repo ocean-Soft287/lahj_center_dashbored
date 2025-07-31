@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lahj_center/feature/items/data/model/advertisminte.dart';
 
 import '../../../../core/const/widget/action_button.dart';
 import '../../../barnavigation/cubitbar/bar_cubit.dart';
@@ -11,10 +12,10 @@ class BuildItemRow extends StatelessWidget {
   final bool isTablet;
 
   const BuildItemRow({
-    Key? key,
+    super.key,
     required this.item,
     required this.isTablet,
-  }) : super(key: key);
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -22,20 +23,20 @@ class BuildItemRow extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
       child: Row(
         children: [
-          Expanded(child: Center(child: Text(item.price))),
+          Expanded(child: Center(child: Text(item.price.toString()))),
           Expanded(child: Center(child: Text(item.description))),
-          Expanded(child: Center(child: Text(item.category))),
+          // Expanded(child: Center(child: Text(item.category))),
           Expanded(
             child: Center(
               child: Image.network(
-                item.imageUrl,
+                item.advertisementImages[0] as String,
                 width: 50,
                 height: 50,
                 fit: BoxFit.cover,
               ),
             ),
           ),
-          Expanded(child: Center(child: Text(item.phoneNumber))),
+          // Expanded(child: Center(child: Text(item.phoneNumber))),
           Expanded(child: Center(child: Text(item.status))),
           Expanded(
             child: isTablet

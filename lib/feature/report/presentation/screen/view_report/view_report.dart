@@ -1,12 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:get_it/get_it.dart';
-import 'package:lahj_center/core/utils/colors/colors.dart';
 import 'package:lahj_center/feature/report/presentation/screen/view_report/widget/desktop_report_grid.dart';
 import 'package:lahj_center/feature/report/presentation/screen/view_report/widget/mobile_report_list.dart';
-import '../../../../../core/const/widget/custom_button.dart';
 import '../../../../../core/utils/font/fonts.dart';
-import '../../../data/report_model/comment_report.dart';
 import '../../manger/report_cubit.dart';
 
 class ViewReportScreen extends StatelessWidget {

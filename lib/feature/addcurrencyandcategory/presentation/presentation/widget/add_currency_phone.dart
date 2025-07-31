@@ -9,14 +9,6 @@ import '../../../../../core/utils/class_helper/validator_class.dart';
 import '../../../../../core/utils/colors/colors.dart';
 import '../../../../../core/utils/font/fonts.dart';
 
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lahj_center/feature/addcurrencyandcategory/presentation/manger/currency_cubit/currency_cubit.dart';
-import 'package:lahj_center/feature/barnavigation/cubitbar/bar_cubit.dart';
-import '../../../../../core/const/widget/custom_button.dart';
-import '../../../../../core/const/widget/textformcrud.dart';
-import '../../../../../core/utils/colors/colors.dart';
-import '../../../../../core/utils/font/fonts.dart';
 
 class AddCurrencyPhone extends StatelessWidget {
   final TextEditingController currency;
